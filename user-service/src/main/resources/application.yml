@@ -1,0 +1,26 @@
+#spring:
+#  jpa:
+#    generated-ddl: true
+#    hibernate:
+#      ddl-auto: true
+#      show_sql: true
+#
+#cloud:
+#  aws:
+#    region:
+#      static: eu-west-1
+#    stack:
+#      auto: true
+#    rds:
+#      dbInstanceIdentifier: userdb
+#      springaws:
+#        password: EunhaC58ARWSBfW
+#        username: gullyipl
+#        databaseName: userdb
+#    credentials:
+#      accessKey: AKIAJQ5SK5IQ7FIY3NFQ
+#      secretKey: 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
+#      instanceProfile: true
+#      useDefaultAwsCredentialsChain: true
+#    s3:
+#      bucket: elasticbeanstalk-eu-west-1-760504728997
