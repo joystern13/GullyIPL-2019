@@ -3,3 +3,10 @@
 ## react-social
 > React project
 use `npm install && npm run build` to get deployment build
+use `npm install && npm start` to test on localhost
+
+## auth-service
+> Spring project for authentication
+
+## match-service
+> Spring project for fetching match information
