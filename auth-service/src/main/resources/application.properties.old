@@ -1,0 +1,37 @@
+spring.application.name=user-service
+server.port=8093
+spring.jpa.generate-ddl=true
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.hibernate.show_sql=true
+spring.jpa.database-platform=org.hibernate.dialect.MySQL55Dialect
+
+service=user-service
+
+database=mysql
+spring.cloud.gcp.sql.enabled=true
+spring.cloud.gcp.sql.database-name=ipldb
+spring.cloud.gcp.sql.instance-connection-name=gullyipl:europe-west3:gullyipl-db
+spring.datasource.password=cricpass123
+spring.cloud.gcp.project-id=gullyipl
+spring.cloud.gcp.credentials.location=classpath:gullyipl-20dfde7c1bd7.json
+spring.datasource.initialization-mode=always
+spring.datasource.continue-on-error=true
+
+spring.security.oauth2.client.registration.google.clientId=1018366795487-7pc07u6ma6hc05qb8g40gkgdnm1g6vdd.apps.googleusercontent.com
+spring.security.oauth2.client.registration.google.clientSecret=YsJNiTQ9MQ-FG7HG4nG18e6g
+spring.security.oauth2.client.registration.google.redirectUriTemplate="{baseUrl}/oauth2/callback/{registrationId}"
+spring.security.oauth2.client.registration.google.scope=email,profile
+
+spring.security.oauth2.client.registration.facebook.clientId=311836579711683
+spring.security.oauth2.client.registration.facebook.clientSecret=6882692659e1ed2aaca334eb98b4afbb
+spring.security.oauth2.client.registration.facebook.redirectUriTemplate="{baseUrl}/oauth2/callback/{registrationId}"
+spring.security.oauth2.client.registration.facebook.scope=email,public_profile
+
+spring.security.oauth2.client.registration.github.clientId=d3e47fc2ddd966fa4352
+spring.security.oauth2.client.registration.github.clientSecret=3bc0f6b8332f93076354c2a5bada2f5a05aea60d
+spring.security.oauth2.client.registration.github.redirectUriTemplate="{baseUrl}/oauth2/callback/{registrationId}"
+spring.security.oauth2.client.registration.github.scope=user:email,read:user
+
+spring.security.oauth2.client.provider.facebook.authorizationUri=https://www.facebook.com/v3.0/dialog/oauth
+spring.security.oauth2.client.provider.facebook.tokenUri: https://graph.facebook.com/v3.0/oauth/access_token
+spring.security.oauth2.client.provider.facebook.userInfoUri: https://graph.facebook.com/v3.0/me?fields=id,first_name,middle_name,last_name,name,email,verified,is_verified,picture.width(250).height(250)
