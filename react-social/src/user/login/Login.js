@@ -5,6 +5,7 @@ import { login } from "../../util/APIUtils";
 import { Link, Redirect } from "react-router-dom";
 import googleLogo from "../../img/google-logo.png";
 import Alert from "react-s-alert";
+import { Card, CardBody } from "reactstrap";
 
 class Login extends Component {
   componentDidMount() {
@@ -40,8 +41,8 @@ class Login extends Component {
         className="login-container"
         style={{ display: "flex", justifyContent: "center" }}
       >
-        <div className="card text-center shadow" style={{ width: 400 }}>
-          <div className="card-body">
+        <Card className="text-center shadow" style={{ width: 400 }}>
+          <CardBody>
             <h1 className="login-title">Login to GullyCricket</h1>
             <SocialLogin />
             <div className="or-separator">
@@ -51,8 +52,8 @@ class Login extends Component {
             <span className="signup-link">
               New user? <Link to="/signup">Sign up!</Link>
             </span>
-          </div>
-        </div>
+          </CardBody>
+        </Card>
       </div>
     );
   }
@@ -61,11 +62,11 @@ class Login extends Component {
 class SocialLogin extends Component {
   render() {
     return (
-      <div className="card shadow-sm">
+      <Card className="shadow-sm">
         <a className="btn social-btn google" href={GOOGLE_AUTH_URL}>
           <img src={googleLogo} alt="Google" /> Log in with Google
         </a>
-      </div>
+      </Card>
     );
   }
 }
