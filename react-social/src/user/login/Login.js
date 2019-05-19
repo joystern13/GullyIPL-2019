@@ -39,7 +39,12 @@ class Login extends Component {
     return (
       <div
         className="login-container"
-        style={{ display: "flex", justifyContent: "center" }}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          paddingLeft: 10,
+          paddingRight: 10
+        }}
       >
         <Card className="text-center shadow" style={{ width: 400 }}>
           <CardBody>

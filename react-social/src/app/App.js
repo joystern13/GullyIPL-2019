@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
-import AppHeader from "../common/AppHeader";
+import Home from "../home/Home";
 import Login from "../user/login/Login";
 import Signup from "../user/signup/Signup";
 import Profile from "../user/profile/Profile";
@@ -31,16 +31,14 @@ class App extends Component {
     this.state = {
       authenticated: false,
       currentUser: null,
-      loading: false
+      loading: false,
+      collapsed: true
     };
 
     this.loadCurrentlyLoggedInUser = this.loadCurrentlyLoggedInUser.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
-    this.state = {
-      collapsed: true
-    };
   }
 
   toggleNavbar() {
@@ -82,41 +80,6 @@ class App extends Component {
     this.loadCurrentlyLoggedInUser();
   }
 
-  navbarItems() {
-    return (
-      <Nav className="ml-auto" navbar>
-        <NavItem>
-          <NavLink href="/login">Home</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink href="/rankings">Rankings</NavLink>
-        </NavItem>
-        {this.props.authenticated ? (
-          <React.Fragment>
-            <NavItem>
-              <NavLink href="/vote">Voting</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink to="/profile">Profile</NavLink>
-            </NavItem>
-            <NavItem>
-              <a onClick={this.props.onLogout}>Logout</a>
-            </NavItem>
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <NavItem>
-              <NavLink to="/login">Login</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink to="/signup">Signup</NavLink>
-            </NavItem>
-          </React.Fragment>
-        )}
-      </Nav>
-    );
-  }
-
   render() {
     if (this.state.loading) {
       return <LoadingIndicator />;
@@ -133,24 +96,42 @@ class App extends Component {
           <NavbarBrand href="/">GullyCricket</NavbarBrand>
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse isOpen={!this.state.collapsed} navbar>
-            {this.navbarItems()}
+            <Nav className="ml-auto" navbar>
+              <NavItem>
+                <NavLink href="/">Home</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/rankings">Rankings</NavLink>
+              </NavItem>
+              {this.state.authenticated ? (
+                <React.Fragment>
+                  <NavItem>
+                    <NavLink href="/vote">Voting</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink href="/profile">Profile</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <a onClick={this.handleLogout}>Logout</a>
+                  </NavItem>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <NavItem>
+                    <NavLink href="/login">Login</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink href="/signup">Signup</NavLink>
+                  </NavItem>
+                </React.Fragment>
+              )}
+            </Nav>
           </Collapse>
         </Navbar>
-        <div className="app-top-box">
-          <AppHeader
-            authenticated={this.state.authenticated}
-            onLogout={this.handleLogout}
-          />
-        </div>
+        <div style={{ height: 75 }} />
         <div className="app-body">
           <Switch>
-            <Route
-              exact
-              path="/"
-              render={props => (
-                <Login authenticated={this.state.authenticated} {...props} />
-              )}
-            />
+            <Route exact path="/" component={Home} />
             <PrivateRoute
               path="/profile"
               authenticated={this.state.authenticated}
