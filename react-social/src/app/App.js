@@ -131,7 +131,7 @@ class App extends Component {
         <div style={{ height: 75 }} />
         <div className="app-body">
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={Login} />
             <PrivateRoute
               path="/profile"
               authenticated={this.state.authenticated}
