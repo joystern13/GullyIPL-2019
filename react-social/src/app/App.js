@@ -15,6 +15,12 @@ import "bootstrap/dist/css/bootstrap.css";
 import "react-s-alert/dist/s-alert-default.css";
 import "react-s-alert/dist/s-alert-css-effects/slide.css";
 import "./App.css";
+// Material helpers
+import { ThemeProvider } from "@material-ui/styles";
+
+// Theme
+import theme from "../theme";
+
 import {
   Navbar,
   NavbarToggler,
@@ -24,6 +30,7 @@ import {
   NavItem,
   NavbarBrand
 } from "reactstrap";
+import Homepage from "../homepage/homepage";
 
 class App extends Component {
   constructor(props) {
@@ -86,82 +93,46 @@ class App extends Component {
     }
 
     return (
-      <div className="app">
-        <Navbar
-          color="dark"
-          dark
-          expand="md"
-          className="navbar-expand-lg fixed-top"
-        >
-          <NavbarBrand href="/">GullyCricket</NavbarBrand>
-          <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-          <Collapse isOpen={!this.state.collapsed} navbar>
-            <Nav className="ml-auto" navbar>
-              <NavItem>
-                <NavLink href="/">Home</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="/rankings">Rankings</NavLink>
-              </NavItem>
-              {this.state.authenticated ? (
-                <React.Fragment>
-                  <NavItem>
-                    <NavLink href="/vote">Voting</NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink href="/profile">Profile</NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <a onClick={this.handleLogout}>Logout</a>
-                  </NavItem>
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <NavItem>
-                    <NavLink href="/login">Login</NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink href="/signup">Signup</NavLink>
-                  </NavItem>
-                </React.Fragment>
-              )}
-            </Nav>
-          </Collapse>
-        </Navbar>
-        <div style={{ height: 75 }} />
-        <div className="app-body">
-          <Switch>
-            <Route exact path="/" component={Login} />
-            <PrivateRoute
-              path="/profile"
-              authenticated={this.state.authenticated}
-              currentUser={this.state.currentUser}
-              component={Profile}
-            />
-            <Route
-              path="/login"
-              render={props => (
-                <Login authenticated={this.state.authenticated} {...props} />
-              )}
-            />
-            <Route
-              path="/signup"
-              render={props => (
-                <Signup authenticated={this.state.authenticated} {...props} />
-              )}
-            />
-            <Route path="/oauth2/redirect" component={OAuth2RedirectHandler} />
-            <Route component={NotFound} />
-          </Switch>
+      <ThemeProvider theme={theme}>
+        <div className="app">
+          <div className="app-body">
+            <Switch>
+              <Route exact path="/" component={Login} />
+              <PrivateRoute
+                path="/profile"
+                authenticated={this.state.authenticated}
+                currentUser={this.state.currentUser}
+                component={Profile}
+              />
+              <Route path="/home" component={Homepage} />
+              <Route
+                path="/login"
+                render={props => (
+                  <Login authenticated={this.state.authenticated} {...props} />
+                )}
+              />
+              <Route
+                path="/signup"
+                render={props => (
+                  <Signup authenticated={this.state.authenticated} {...props} />
+                )}
+              />
+              <Route
+                path="/oauth2/redirect"
+                component={OAuth2RedirectHandler}
+              />
+              <Route component={NotFound} />
+            </Switch>
+          </div>
+          <Alert
+            stack={{ limit: 3 }}
+            timeout={3000}
+            position="top-right"
+            effect="slide"
+            offset={65}
+          />
         </div>
-        <Alert
-          stack={{ limit: 3 }}
-          timeout={3000}
-          position="top-right"
-          effect="slide"
-          offset={65}
-        />
-      </div>
+      </ThemeProvider>
     );
   }
 }

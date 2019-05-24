@@ -21,29 +21,32 @@ class Signup extends Component {
     }
 
     return (
-      <div
-        className="signup-container"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          paddingLeft: 10,
-          paddingRight: 10
-        }}
-      >
-        <Card className="text-center shadow" style={{ width: 400 }}>
-          <CardBody>
-            <h1 className="login-title">Sign up to GullyCricket</h1>
-            <SocialSignup />
-            <div className="or-separator">
-              <span className="or-text">OR</span>
-            </div>
-            <SignupForm {...this.props} />
-            <span className="signup-link">
-              New user? <Link to="/signup">Sign up!</Link>
-            </span>
-          </CardBody>
-        </Card>
-      </div>
+      <React.Fragment>
+        <div style={{ height: 20 }} />
+        <div
+          className="signup-container"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            paddingLeft: 10,
+            paddingRight: 10
+          }}
+        >
+          <Card className="text-center shadow" style={{ width: 400 }}>
+            <CardBody>
+              <h1 className="login-title">Sign up to GullyCricket</h1>
+              <SocialSignup />
+              <div className="or-separator">
+                <span className="or-text">OR</span>
+              </div>
+              <SignupForm {...this.props} />
+              <span className="signup-link">
+                New user? <Link to="/signup">Sign up!</Link>
+              </span>
+            </CardBody>
+          </Card>
+        </div>
+      </React.Fragment>
     );
   }
 }

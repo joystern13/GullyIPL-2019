@@ -3,13 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.0.0",
+    "@material-ui/icons": "^4.0.0",
+    "@material-ui/styles": "^4.0.0",
+    "react": "^16.8.6",
+    "react-chartjs-2": "^2.7.4",
     "bootstrap": "^4.3.1",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
+    "react-dom": "^16.8.6",
+    "chart.js": "^2.7.3",
     "react-router-dom": "^4.3.1",
     "react-s-alert": "^1.4.1",
     "react-scripts": "1.1.5",
-    "reactstrap": "^8.0.0"
+    "reactstrap": "^8.0.0",
+    "recompose": "^0.30.0"
   },
   "homepage": "http://www.gully-cricket.tk",
   "scripts": {
