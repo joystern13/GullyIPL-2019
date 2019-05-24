@@ -38,8 +38,8 @@ class Signup extends Component {
               <span className="or-text">OR</span>
             </div>
             <SignupForm {...this.props} />
-            <span className="signup-link">
-              New user? <Link to="/signup">Sign up!</Link>
+            <span className="login-link">
+              Already have an account? <Link to="/login">Login!</Link>
             </span>
           </CardBody>
         </Card>
