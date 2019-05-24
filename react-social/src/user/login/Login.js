@@ -37,29 +37,32 @@ class Login extends Component {
     }
 
     return (
-      <div
-        className="login-container"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          paddingLeft: 10,
-          paddingRight: 10
-        }}
-      >
-        <Card className="text-center shadow" style={{ width: 400 }}>
-          <CardBody>
-            <h1 className="login-title">Login to GullyCricket</h1>
-            <SocialLogin />
-            <div className="or-separator">
-              <span className="or-text">OR</span>
-            </div>
-            <LoginForm {...this.props} />
-            <span className="signup-link">
-              New user? <Link to="/signup">Sign up!</Link>
-            </span>
-          </CardBody>
-        </Card>
-      </div>
+      <React.Fragment>
+        <div style={{ height: 20 }} />
+        <div
+          className="login-container"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            paddingLeft: 10,
+            paddingRight: 10
+          }}
+        >
+          <Card className="text-center shadow" style={{ width: 400 }}>
+            <CardBody>
+              <h1 className="login-title">Login to GullyCricket</h1>
+              <SocialLogin />
+              <div className="or-separator">
+                <span className="or-text">OR</span>
+              </div>
+              <LoginForm {...this.props} />
+              <span className="signup-link">
+                New user? <Link to="/signup">Sign up!</Link>
+              </span>
+            </CardBody>
+          </Card>
+        </div>
+      </React.Fragment>
     );
   }
 }
