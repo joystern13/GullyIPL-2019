@@ -22,7 +22,6 @@ import {
 
 // Material icons
 import {
-  DashboardOutlined as DashboardIcon,
   PeopleOutlined as PeopleIcon,
   ShoppingBasketOutlined as ShoppingBasketIcon,
   LockOpenOutlined as LockOpenIcon,
@@ -39,6 +38,11 @@ import {
 import styles from "./styles";
 
 class Sidebar extends Component {
+  constructor(props) {
+    super(props);
+    console.log("Sidebar", props);
+  }
+
   render() {
     const { classes, className } = this.props;
 
@@ -46,28 +50,16 @@ class Sidebar extends Component {
 
     return (
       <nav className={rootClassName}>
-        <div className={classes.logoWrapper}>
-          <Link className={classes.logoLink} to="/">
-            <img
-              className={classes.logoImage}
-              src="../../../../img/brainalytica_logo.svg"
-            />
-          </Link>
-        </div>
-        <Divider className={classes.logoDivider} />
         <div className={classes.profile}>
           <Link to="/account">
             <Avatar
-              alt="Roman Kutepov"
+              alt={this.props.currentUser.name}
               className={classes.avatar}
-              src="/images/avatars/avatar_1.png"
+              src={this.props.currentUser.imageUrl}
             />
           </Link>
           <Typography className={classes.nameText} variant="h6">
-            Roman Kutepov
-          </Typography>
-          <Typography className={classes.bioText} variant="caption">
-            Brain Director
+            {this.props.currentUser.name}
           </Typography>
         </div>
         <Divider className={classes.profileDivider} />

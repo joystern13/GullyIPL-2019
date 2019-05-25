@@ -7,12 +7,12 @@ export default theme => ({
     display: "flex",
     flexBasis: "420px",
     paddingBottom: theme.spacing(0.5),
-    paddingLeft: theme.spacing.unit,
-    paddingRight: theme.spacing.unit,
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
     paddingTop: theme.spacing(0.5)
   },
   icon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
     color: theme.palette.text.secondary
   },
   input: {

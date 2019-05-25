@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
-import Home from "../home/Home";
 import Login from "../user/login/Login";
 import Signup from "../user/signup/Signup";
 import Profile from "../user/profile/Profile";
@@ -21,15 +20,6 @@ import { ThemeProvider } from "@material-ui/styles";
 // Theme
 import theme from "../theme";
 
-import {
-  Navbar,
-  NavbarToggler,
-  Collapse,
-  Nav,
-  NavLink,
-  NavItem,
-  NavbarBrand
-} from "reactstrap";
 import Homepage from "../homepage/homepage";
 
 class App extends Component {
@@ -104,7 +94,12 @@ class App extends Component {
                 currentUser={this.state.currentUser}
                 component={Profile}
               />
-              <Route path="/home" component={Homepage} />
+              <PrivateRoute
+                path="/home"
+                authenticated={this.state.authenticated}
+                currentUser={this.state.currentUser}
+                component={Homepage}
+              />
               <Route
                 path="/login"
                 render={props => (

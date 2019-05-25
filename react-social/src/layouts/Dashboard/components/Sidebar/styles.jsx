@@ -4,8 +4,8 @@ export default theme => ({
     display: "flex",
     flexDirection: "column",
     height: "100%",
-    paddingLeft: theme.spacing.unit,
-    paddingRight: theme.spacing.unit
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1)
   },
   logoWrapper: {
     display: "flex",
@@ -56,7 +56,7 @@ export default theme => ({
       }
     },
     "& + &": {
-      marginTop: theme.spacing.unit
+      marginTop: theme.spacing(1)
     }
   },
   activeListItem: {

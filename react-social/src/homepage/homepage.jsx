@@ -1,18 +1,22 @@
 import React, { Component } from "react";
 import { Dashboard as DashboardLayout } from "../layouts";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 // Material helpers
 import { withStyles } from "@material-ui/core";
 
-import classNames from "classnames";
-
-import { Portlet, PortletContent, Paper } from "../components";
+import voteImg from "../img/vote.png";
+import momImg from "../img/mom.png";
+import rankingImg from "../img/ranking.png";
+import HomepageCard from "./homepagecards/homepagecard";
+import Portlet from "./portlet/rulesportlet";
 
 // Component styles
 const styles = theme => ({
   root: {
+    background: "linear-gradient(to right, #000428, #006e92)",
     padding: theme.spacing(4)
   },
   item: {
@@ -21,66 +25,36 @@ const styles = theme => ({
 });
 
 class Homepage extends Component {
-  state = {};
+  state = {
+    homepage_cards: [
+      { id: 1, text: "Vote Now", img: voteImg, link: "#" },
+      { id: 2, text: "Vote MoM", img: momImg, link: "#" },
+      { id: 3, text: "Rankings", img: rankingImg, link: "#" }
+    ]
+  };
+
+  constructor(props) {
+    super(props);
+    console.log("Homepage", props);
+  }
 
   render() {
-    const { classes, className, ...rest } = this.props;
-    const rootClassName = classNames(classes.root, className);
+    const { classes } = this.props;
 
     return (
-      <DashboardLayout title="Homepage">
+      <DashboardLayout title="Homepage" currentUser={this.props.currentUser}>
         <div className={classes.root}>
-          <Grid container spacing={4}>
+          <Grid container spacing={3}>
             <Grid item lg={12} md={12} xl={9} xs={12}>
-              <Portlet {...rest} className={rootClassName}>
-                <PortletContent>
-                  <Typography className={classes.title} variant="h4">
-                    RULES:
-                  </Typography>
-                  <br />
-                  <Typography className={classes.title} variant="body1">
-                    <ol>
-                      <li>
-                        For each correct guess, points equivalent to 1 point per
-                        losing player divided by number of winning players will
-                        be awarded to each winner.
-                      </li>
-                      <li>Each incorrect guess will cost you 1 point.</li>
-                      <li>
-                        In case a match results in a draw, no points will be
-                        rewarded or deducted.
-                      </li>
-                      <li>
-                        In case of no votes for any of the team, either winning
-                        or losing, no points will be deducted or rewarded.
-                      </li>
-                    </ol>
-                  </Typography>
-                </PortletContent>
-              </Portlet>
+              <Portlet />
             </Grid>
-            <Grid item lg={3} sm={6} xl={3} xs={12}>
-              <Paper {...rest} className={classes.item}>
-                <div className={classes.content}>
-                  <div className={classes.details}>
-                    <Typography className={classes.title} variant="body2">
-                      BUDGET
-                    </Typography>
-                  </div>
-                </div>
-              </Paper>
-            </Grid>
-            <Grid item lg={9} md={12} xl={9} xs={12}>
-              <Paper {...rest} className={classes.item}>
-                <div className={classes.content}>
-                  <div className={classes.details}>
-                    <Typography className={classes.title} variant="body2">
-                      BUDGET
-                    </Typography>
-                  </div>
-                </div>
-              </Paper>
-            </Grid>
+            {this.state.homepage_cards.map(homepage_card => (
+              <Grid item key={homepage_card.id} lg={4} md={6} sm={6} xs={12}>
+                <Link to={homepage_card.link}>
+                  <HomepageCard homepage_card={homepage_card} />
+                </Link>
+              </Grid>
+            ))}
           </Grid>
         </div>
       </DashboardLayout>

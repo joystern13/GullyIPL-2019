@@ -41,7 +41,7 @@ export default theme => ({
     width: "16px"
   },
   footer: {
-    paddingBottom: theme.spacing.unit,
+    paddingBottom: theme.spacing(1),
     display: "flex",
     justifyContent: "center"
   },
