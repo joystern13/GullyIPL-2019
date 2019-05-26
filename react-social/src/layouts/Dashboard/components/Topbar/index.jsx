@@ -77,7 +77,7 @@ class Topbar extends Component {
     const { history } = this.props;
 
     localStorage.setItem("isAuthenticated", false);
-    history.push("/sign-in");
+    history.push("/login");
   };
 
   handleShowNotifications = event => {
@@ -133,7 +133,7 @@ class Topbar extends Component {
             </IconButton>
             <IconButton
               className={classes.signOutButton}
-              onClick={this.handleSignOut}
+              onClick={this.props.handleLogout}
             >
               <InputIcon />
             </IconButton>
