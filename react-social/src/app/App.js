@@ -31,6 +31,7 @@ import {
   NavbarBrand
 } from "reactstrap";
 import Homepage from "../homepage/homepage";
+import vote from "../vote/vote";
 
 class App extends Component {
   constructor(props) {
@@ -105,6 +106,7 @@ class App extends Component {
                 component={Profile}
               />
               <Route path="/home" component={Homepage} />
+              <Route path="/vote" component={vote} />
               <Route
                 path="/login"
                 render={props => (
