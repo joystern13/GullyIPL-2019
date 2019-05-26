@@ -61,19 +61,12 @@ class Vote extends Component {
               </Portlet>
             </Grid>
             <Grid item lg={12} md={12} xl={9} xs={12}>
-              <VoteForMatch />
-            </Grid>
-
-            {/* <Grid item lg={12} md={12} xl={9} xs={12}>
               <Portlet {...rest} className={rootClassName}>
                 <PortletContent>
-                  <Typography className={classes.title} variant="h5">
-                    1st Warm-up game 24 May 2019 10:30 AM GMT County Ground
-                    Bristol, England
-                  </Typography>
+                  <VoteForMatch />
                 </PortletContent>
               </Portlet>
-            </Grid> */}
+            </Grid>
           </Grid>
         </div>
       </DashboardLayout>

@@ -5,7 +5,22 @@
   -moz-appearance: none;
   appearance: none;
 }
-
+.team1 {
+  padding: 20px;
+  display: inline-block;
+  float: left;
+}
+.team2 {
+  padding: 20px;
+  display: inline-block;
+  float: right;
+}
+.AFG {
+  background-image: url(../img/teams/AFG.png);
+}
+.AUS {
+  background-image: url(../img/teams/AUS.png);
+}
 .cc-selector input:active + .drinkcard-cc {
   opacity: 0.9;
 }

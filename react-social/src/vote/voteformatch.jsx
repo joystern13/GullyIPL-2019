@@ -4,12 +4,11 @@ import "./radio_css.css";
 // Externals
 import classNames from "classnames";
 import PropTypes from "prop-types";
+import ReactRadioButtonGroup from "react-radio-button-group";
+import { Typography } from "@material-ui/core";
 
 // Material helpers
 import { withStyles } from "@material-ui/core";
-
-// Material components
-import { Button } from "@material-ui/core";
 
 // Shared components
 import {
@@ -33,7 +32,7 @@ class VoteForMatch extends Component {
   }
 
   handleOptionChange = changeEvent => {
-    alert("--" + changeEvent.target.value + "--");
+    //alert("--" + changeEvent.target.value + "--");
     this.setState({
       selectedOption: changeEvent.target.value
     });
@@ -49,56 +48,35 @@ class VoteForMatch extends Component {
     const { classes, className, ...rest } = this.props;
 
     const rootClassName = classNames(classes.root, className);
-    const bg1 = require("../img/teams/AFG.png");
-    const bg2 = require("../img/teams/AUS.png");
 
     return (
       <div className="container">
-        <div className="row">
-          <div className="col-sm-12">
-            <form onSubmit={this.handleFormSubmit}>
-              <div>
-                <div className="form-check">
-                  <label
-                    className="drinkcard-cc"
-                    style={{ backgroundImage: "url(" + bg1 + ")" }}
-                    htmlFor="rdbTeam1"
-                  >
-                    <input
-                      type="radio"
-                      id="rdbTeam1"
-                      name="react-tips"
-                      value="option1"
-                      checked={this.state.selectedOption === "option1"}
-                      onChange={this.handleOptionChange}
-                      className="form-check-input"
-                    />
-                  </label>
-                </div>
-                <div className="form-check">
-                  <label
-                    className="drinkcard-cc"
-                    style={{ backgroundImage: "url(" + bg2 + ")" }}
-                    htmlFor="rdbTeam2"
-                  >
-                    <input
-                      type="radio"
-                      id="rdbTeam2"
-                      name="react-tips"
-                      value="option2"
-                      checked={this.state.selectedOption === "option2"}
-                      onChange={this.handleOptionChange}
-                      className="form-check-input"
-                    />
-                  </label>
-                </div>
-              </div>
-              <button className="btn btn-default" type="submit">
-                Save
-              </button>
-            </form>
+        <form onSubmit={this.handleFormSubmit}>
+          <div className="cc-selector">
+            <Typography variant="body1" className="matchText">
+              1st Warm-up game County Ground Bristol, England, 24 May 2019 10:30
+              AM GMT
+            </Typography>
+            <ReactRadioButtonGroup
+              options={[
+                {
+                  value: "AFG",
+                  label: "AFG",
+                  itemClassName: "team1",
+                  labelClassName: "drinkcard-cc AFG"
+                },
+                {
+                  value: "AUS",
+                  label: "AUS",
+                  itemClassName: "team2",
+                  labelClassName: "drinkcard-cc AUS"
+                }
+              ]}
+              name="rdbTeam"
+              isStateful={true}
+            />
           </div>
-        </div>
+        </form>
       </div>
     );
   }

@@ -3,5 +3,8 @@ export default theme => ({
   portletFooter: {
     display: "flex",
     justifyContent: "flex-end"
+  },
+  matchText: {
+    textAlign: "center"
   }
 });
