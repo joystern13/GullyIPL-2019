@@ -23,7 +23,6 @@ export default theme => ({
   },
   content: {
     marginTop: "64px",
-    backgroundColor: theme.palette.background.default,
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen

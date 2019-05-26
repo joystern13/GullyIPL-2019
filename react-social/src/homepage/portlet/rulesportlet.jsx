@@ -8,10 +8,6 @@ import classNames from "classnames";
 import styles from "./styles";
 
 class RulesPortlet extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   state = {};
   render() {
     const { classes, className, ...rest } = this.props;

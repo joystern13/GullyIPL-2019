@@ -21,19 +21,21 @@ import { ThemeProvider } from "@material-ui/styles";
 import theme from "../theme";
 
 import Homepage from "../homepage/homepage";
+import ManOfTheMatch from "../mom/mom";
 
 class App extends Component {
   constructor(props) {
+    console.log("in props constructor");
     super(props);
     this.state = {
       authenticated: false,
       currentUser: null,
-      loading: false,
+      loading: true,
       collapsed: true
     };
 
     this.loadCurrentlyLoggedInUser = this.loadCurrentlyLoggedInUser.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
+    //this.handleLogout = this.handleLogout.bind(this);
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
   }
@@ -64,16 +66,17 @@ class App extends Component {
       });
   }
 
-  handleLogout() {
+  handleLogout = () => {
     localStorage.removeItem(ACCESS_TOKEN);
     this.setState({
       authenticated: false,
       currentUser: null
     });
     Alert.success("You're safely logged out!");
-  }
+  };
 
   componentDidMount() {
+    console.log("in componentDidMount");
     this.loadCurrentlyLoggedInUser();
   }
 
@@ -82,12 +85,22 @@ class App extends Component {
       return <LoadingIndicator />;
     }
 
+    console.log("App.js", this.state);
+    console.log("App.js", this.props);
+
     return (
       <ThemeProvider theme={theme}>
         <div className="app">
           <div className="app-body">
             <Switch>
-              <Route exact path="/" component={Login} />
+              <PrivateRoute
+                exact
+                path="/"
+                authenticated={this.state.authenticated}
+                currentUser={this.state.currentUser}
+                handleLogout={this.handleLogout}
+                component={Homepage}
+              />
               <PrivateRoute
                 path="/profile"
                 authenticated={this.state.authenticated}
@@ -98,7 +111,15 @@ class App extends Component {
                 path="/home"
                 authenticated={this.state.authenticated}
                 currentUser={this.state.currentUser}
+                handleLogout={this.handleLogout}
                 component={Homepage}
+              />
+              <PrivateRoute
+                path="/mom"
+                authenticated={this.state.authenticated}
+                currentUser={this.state.currentUser}
+                handleLogout={this.handleLogout}
+                component={ManOfTheMatch}
               />
               <Route
                 path="/login"
@@ -115,6 +136,9 @@ class App extends Component {
               <Route
                 path="/oauth2/redirect"
                 component={OAuth2RedirectHandler}
+                authenticated={this.state.authenticated}
+                currentUser={this.state.currentUser}
+                handleLogout={this.handleLogout}
               />
               <Route component={NotFound} />
             </Switch>

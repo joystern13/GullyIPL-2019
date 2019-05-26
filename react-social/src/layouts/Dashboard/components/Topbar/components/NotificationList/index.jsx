@@ -1,12 +1,14 @@
-import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component, Fragment } from "react";
+import { Link } from "react-router-dom";
 
 // Externals
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import PropTypes from "prop-types";
+import classNames from "classnames";
+
+import emptyImg from "../../../../../../img/empty.png";
 
 // Material helpers
-import { withStyles } from '@material-ui/core';
+import { withStyles } from "@material-ui/core";
 
 // Material components
 import {
@@ -17,7 +19,7 @@ import {
   ListItemIcon,
   ListItemText,
   Typography
-} from '@material-ui/core';
+} from "@material-ui/core";
 
 // Material icons
 import {
@@ -26,27 +28,27 @@ import {
   PeopleOutlined as PeopleIcon,
   Code as CodeIcon,
   Store as StoreIcon
-} from '@material-ui/icons';
+} from "@material-ui/icons";
 
 // Component styles
-import styles from './styles';
+import styles from "./styles";
 
 const icons = {
   order: {
     icon: <PaymentIcon />,
-    color: 'blue'
+    color: "blue"
   },
   user: {
     icon: <PeopleIcon />,
-    color: 'red'
+    color: "red"
   },
   product: {
     icon: <StoreIcon />,
-    color: 'green'
+    color: "green"
   },
   feature: {
     icon: <CodeIcon />,
-    color: 'purple'
+    color: "purple"
   }
 };
 
@@ -62,20 +64,14 @@ class NotificationList extends Component {
           <Fragment>
             <div className={classes.header}>
               <Typography variant="h6">User Notifications</Typography>
-              <Typography
-                className={classes.subtitle}
-                variant="body2"
-              >
+              <Typography className={classes.subtitle} variant="body2">
                 {notifications.length} new notifications
               </Typography>
             </div>
             <div className={classes.content}>
               <List component="div">
                 {notifications.map(notification => (
-                  <Link
-                    key={notification.id}
-                    to="#"
-                  >
+                  <Link key={notification.id} to="#">
                     <ListItem
                       className={classes.listItem}
                       component="div"
@@ -117,7 +113,7 @@ class NotificationList extends Component {
               <img
                 alt="Empty list"
                 className={classes.emptyImage}
-                src="/images/empty.png"
+                src={emptyImg}
               />
             </div>
             <Typography variant="h4">There's nothing here...</Typography>

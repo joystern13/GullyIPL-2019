@@ -57,6 +57,7 @@ class Dashboard extends Component {
           isSidebarOpen={isOpen}
           onToggleSidebar={this.handleToggleOpen}
           title={title}
+          handleLogout={this.props.handleLogout}
         />
         <Drawer
           anchor="left"

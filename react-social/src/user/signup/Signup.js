@@ -22,7 +22,7 @@ class Signup extends Component {
 
     return (
       <React.Fragment>
-        <div style={{ height: 20 }} />
+        <div style={{ height: 25 }} />
         <div
           className="signup-container"
           style={{

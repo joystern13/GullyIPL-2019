@@ -133,7 +133,7 @@ class Topbar extends Component {
             </IconButton>
             <IconButton
               className={classes.signOutButton}
-              onClick={this.handleSignOut}
+              onClick={this.props.handleLogout}
             >
               <InputIcon />
             </IconButton>

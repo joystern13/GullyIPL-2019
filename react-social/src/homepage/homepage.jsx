@@ -16,7 +16,6 @@ import Portlet from "./portlet/rulesportlet";
 // Component styles
 const styles = theme => ({
   root: {
-    background: "linear-gradient(to right, #000428, #006e92)",
     padding: theme.spacing(4)
   },
   item: {
@@ -27,8 +26,8 @@ const styles = theme => ({
 class Homepage extends Component {
   state = {
     homepage_cards: [
-      { id: 1, text: "Vote Now", img: voteImg, link: "#" },
-      { id: 2, text: "Vote MoM", img: momImg, link: "#" },
+      { id: 1, text: "Vote Now", img: voteImg, link: "/vote" },
+      { id: 2, text: "Guess MoM", img: momImg, link: "/mom" },
       { id: 3, text: "Rankings", img: rankingImg, link: "#" }
     ]
   };
@@ -42,7 +41,11 @@ class Homepage extends Component {
     const { classes } = this.props;
 
     return (
-      <DashboardLayout title="Homepage" currentUser={this.props.currentUser}>
+      <DashboardLayout
+        title="Homepage"
+        currentUser={this.props.currentUser}
+        handleLogout={this.props.handleLogout}
+      >
         <div className={classes.root}>
           <Grid container spacing={3}>
             <Grid item lg={12} md={12} xl={9} xs={12}>
