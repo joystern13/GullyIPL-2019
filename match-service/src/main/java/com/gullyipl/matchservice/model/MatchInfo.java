@@ -32,14 +32,17 @@ public class MatchInfo {
     @Column(name="result_description")
     private String resultDesc;
 
-    @Column(name = "team1_id")
-    private int team1Id;
+    @OneToOne
+    @JoinColumn(name="team1_id")
+    private TeamInfo team1Info;
 
-    @Column(name = "team2_id")
-    private int team2Id;
+    @OneToOne
+    @JoinColumn(name="team2_id")
+    private TeamInfo team2Info;
 
     @Column(name = "winner_team_id")
     private int winnerTeamId;
+
 
     public int getMatchId() {
         return matchId;
@@ -113,20 +116,20 @@ public class MatchInfo {
         this.resultDesc = resultDesc;
     }
 
-    public int getTeam1Id() {
-        return team1Id;
+    public TeamInfo getTeam1Info() {
+        return team1Info;
     }
 
-    public void setTeam1Id(int team1Id) {
-        this.team1Id = team1Id;
+    public void setTeam1Info(TeamInfo team1Info) {
+        this.team1Info = team1Info;
     }
 
-    public int getTeam2Id() {
-        return team2Id;
+    public TeamInfo getTeam2Info() {
+        return team2Info;
     }
 
-    public void setTeam2Id(int team2Id) {
-        this.team2Id = team2Id;
+    public void setTeam2Info(TeamInfo team2Info) {
+        this.team2Info = team2Info;
     }
 
     public int getWinnerTeamId() {
@@ -140,7 +143,7 @@ public class MatchInfo {
     public MatchInfo() {
     }
 
-    public MatchInfo(int matchId, String matchDescription, long startTime, long endTime, int dayNightFlag, String venueName, String venueLocation, String matchState, String resultDesc, int team1Id, int team2Id, int winnerTeamId) {
+    public MatchInfo(int matchId, String matchDescription, long startTime, long endTime, int dayNightFlag, String venueName, String venueLocation, String matchState, String resultDesc, TeamInfo team1Info, TeamInfo team2Info, int winnerTeamId) {
         this.matchId = matchId;
         this.matchDescription = matchDescription;
         this.startTime = startTime;
@@ -150,8 +153,8 @@ public class MatchInfo {
         this.venueLocation = venueLocation;
         this.matchState = matchState;
         this.resultDesc = resultDesc;
-        this.team1Id = team1Id;
-        this.team2Id = team2Id;
+        this.team1Info = team1Info;
+        this.team2Info = team2Info;
         this.winnerTeamId = winnerTeamId;
     }
 }

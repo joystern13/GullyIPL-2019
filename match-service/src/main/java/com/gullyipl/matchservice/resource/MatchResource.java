@@ -64,8 +64,8 @@ public class MatchResource {
                 matchInfo.setVenueLocation(match.getVenue().getLocation());
                 matchInfo.setMatchState(match.getHeader().getState());
                 matchInfo.setResultDesc(match.getHeader().getStatus());
-                matchInfo.setTeam1Id(match.getTeam1().getId());
-                matchInfo.setTeam2Id(match.getTeam2().getId());
+                //matchInfo.setTeam1Info(match.getTeam1().getId());
+                //matchInfo.setTeam2Id(match.getTeam2().getId());
 
                 try {
 
@@ -82,7 +82,7 @@ public class MatchResource {
                             DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
                     Match matchDetails = mapper1.readValue(matchStr, Match.class);
-                    matchInfo.setWinnerTeamId(match.getWinning_team_id());
+                    //matchInfo.setWinnerTeamId(match.getWinning_team_id());
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
