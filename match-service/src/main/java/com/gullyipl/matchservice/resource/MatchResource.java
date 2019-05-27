@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -122,6 +123,6 @@ public class MatchResource {
 
     @GetMapping(value = "upcoming")
     public List<MatchInfo> getUpcomingMatches(){
-        return matchRepository.findByMatchState("upcomming");
+        return matchRepository.findByMatchStateInOrderByStartTimeAsc(Arrays.asList("upcomming","preview"));
     }
 }

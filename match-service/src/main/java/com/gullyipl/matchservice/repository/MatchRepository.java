@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface MatchRepository extends JpaRepository<MatchInfo,Integer> {
     List<MatchInfo> findByMatchState(String state);
+
+	List<MatchInfo> findByMatchStateInOrderByStartTimeAsc(List<String> states);
 }
