@@ -29,7 +29,11 @@ class Vote extends Component {
     const rootClassName = classNames(classes.root, className);
 
     return (
-      <DashboardLayout title="Vote">
+      <DashboardLayout
+        title="Vote"
+        currentUser={this.props.currentUser}
+        handleLogout={this.props.handleLogout}
+      >
         <div className={classes.root}>
           <Grid container spacing={4}>
             <Grid item lg={12} md={12} xl={9} xs={12}>
