@@ -17,7 +17,7 @@
     "reactstrap": "^8.0.0",
     "recompose": "^0.30.0",
     "react-radio-button-group": "^1.2.8",
-    "axios": "^0.18.0"
+    "react-moment": "^0.9.2"
   },
   "homepage": "http://www.gully-cricket.tk",
   "scripts": {

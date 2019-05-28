@@ -6,6 +6,7 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import ReactRadioButtonGroup from "react-radio-button-group";
 import { Grid, Typography } from "@material-ui/core";
+import Moment from "react-moment";
 
 // Material helpers
 import { withStyles } from "@material-ui/core";
@@ -79,6 +80,7 @@ class VoteForMatch extends Component {
     const { error, isLoaded, matches } = this.state;
 
     const rootClassName = classNames(classes.root, className);
+    const unixTimestamp = 0;
 
     // if (error) {
     //   return <div>Error: {error.message}</div>;
@@ -95,8 +97,9 @@ class VoteForMatch extends Component {
                   <Portlet {...rest} className={rootClassName}>
                     <PortletContent>
                       <Typography variant="body1" className="matchText">
-                        {match.matchDescription} {match.venueName}{" "}
-                        {match.venueLocation}, {match.startTime}
+                        <b>{match.matchDescription}</b> : {match.venueName}{" "}
+                        {match.venueLocation},{" "}
+                        <Moment unix>{match.startTime}</Moment>
                       </Typography>
                       <ReactRadioButtonGroup
                         options={[
