@@ -60,13 +60,8 @@ class Vote extends Component {
                 </PortletContent>
               </Portlet>
             </Grid>
-            <Grid item lg={12} md={12} xl={9} xs={12}>
-              <Portlet {...rest} className={rootClassName}>
-                <PortletContent>
-                  <VoteForMatch />
-                </PortletContent>
-              </Portlet>
-            </Grid>
+
+            <VoteForMatch />
           </Grid>
         </div>
       </DashboardLayout>

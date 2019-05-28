@@ -21,6 +21,33 @@
 .AUS {
   background-image: url(../img/teams/AUS.png);
 }
+.BAN {
+  background-image: url(../img/teams/BAN.png);
+}
+.ENG {
+  background-image: url(../img/teams/ENG.png);
+}
+.IND {
+  background-image: url(../img/teams/IND.png);
+}
+.NZ {
+  background-image: url(../img/teams/NZ.png);
+}
+.PAK {
+  background-image: url(../img/teams/PAK.png);
+}
+.RSA {
+  background-image: url(../img/teams/RSA.png);
+}
+.SL {
+  background-image: url(../img/teams/SL.png);
+}
+.TBC {
+  background-image: url(../img/teams/TBC.png);
+}
+.WI {
+  background-image: url(../img/teams/WI.png);
+}
 .cc-selector input:active + .drinkcard-cc {
   opacity: 0.9;
 }

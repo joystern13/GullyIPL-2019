@@ -32,11 +32,11 @@ public class MatchInfo {
     @Column(name="result_description")
     private String resultDesc;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="team1_id")
     private TeamInfo team1Info;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="team2_id")
     private TeamInfo team2Info;
 

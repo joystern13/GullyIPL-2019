@@ -5,8 +5,7 @@ import "./radio_css.css";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import ReactRadioButtonGroup from "react-radio-button-group";
-import { Typography } from "@material-ui/core";
-import axios from "axios";
+import { Grid, Typography } from "@material-ui/core";
 
 // Material helpers
 import { withStyles } from "@material-ui/core";
@@ -49,18 +48,18 @@ class VoteForMatch extends Component {
   };
 
   componentDidMount() {
-    axios
-      .get("http://mapps.cricbuzz.com/cbzios/series/2697/matches")
-      .then(function(response) {
-        console.log(response);
-      });
-    fetch("http://mapps.cricbuzz.com/cbzios/series/2697/matches")
+    // axios
+    //   .get("http://mapps.cricbuzz.com/cbzios/series/2697/matches")
+    //   .then(function(response) {
+    //     console.log(response);
+    //   });
+    fetch("http://localhost:8181/gullyipl/matches/upcoming")
       .then(res => res.json())
       .then(
         result => {
           this.setState({
             isLoaded: true,
-            matches: result.matches
+            matches: result
           });
         },
         // Note: it's important to handle errors here
@@ -90,15 +89,50 @@ class VoteForMatch extends Component {
       return (
         <div className="container">
           <form onSubmit={this.handleFormSubmit}>
-            <div className="cc-selector">
-              <ul>
-                {matches.map(match => (
-                  <li key={match.match_id}>
-                    {match.match_id} === {match.header.match_desc}
-                  </li>
-                ))}
-              </ul>
-              <Typography variant="body1" className="matchText">
+            {matches.map(match => (
+              <div className="cc-selector">
+                <Grid item lg={12} md={12} xl={9} xs={12}>
+                  <Portlet {...rest} className={rootClassName}>
+                    <PortletContent>
+                      <Typography variant="body1" className="matchText">
+                        {match.matchDescription} {match.venueName}{" "}
+                        {match.venueLocation}, {match.startTime}
+                      </Typography>
+                      <ReactRadioButtonGroup
+                        options={[
+                          {
+                            value:
+                              "{" +
+                              match.matchId +
+                              "," +
+                              match.team1Info.teamCode,
+                            label: match.team1Info.teamCode,
+                            itemClassName: "team1",
+                            labelClassName:
+                              "drinkcard-cc " + match.team1Info.teamCode
+                          },
+                          {
+                            value:
+                              "{" +
+                              match.matchId +
+                              "," +
+                              match.team2Info.teamCode,
+                            label: match.team2Info.teamCode,
+                            itemClassName: "team2",
+                            labelClassName:
+                              "drinkcard-cc " + match.team2Info.teamCode
+                          }
+                        ]}
+                        name={"rdbTeam" + match.matchId}
+                        isStateful={true}
+                      />
+                    </PortletContent>
+                  </Portlet>
+                </Grid>
+              </div>
+            ))}
+
+            {/* <Typography variant="body1" className="matchText">
                 1st Warm-up game County Ground Bristol, England, 24 May 2019
                 10:30 AM GMT
               </Typography>
@@ -119,8 +153,7 @@ class VoteForMatch extends Component {
                 ]}
                 name="rdbTeam"
                 isStateful={true}
-              />
-            </div>
+              /> */}
           </form>
         </div>
       );
