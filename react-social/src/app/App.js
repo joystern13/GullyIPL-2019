@@ -7,7 +7,7 @@ import OAuth2RedirectHandler from "../user/oauth2/OAuth2RedirectHandler";
 import NotFound from "../common/NotFound";
 import LoadingIndicator from "../common/LoadingIndicator";
 import { getCurrentUser } from "../util/APIUtils";
-import { ACCESS_TOKEN } from "../constants";
+import { ACCESS_TOKEN, USER_ID } from "../constants";
 import PrivateRoute from "../common/PrivateRoute";
 import Alert from "react-s-alert";
 import "bootstrap/dist/css/bootstrap.css";
@@ -65,10 +65,13 @@ class App extends Component {
           loading: false
         });
       });
+
+    console.log(this.state.currentUser);
   }
 
   handleLogout = () => {
     localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(USER_ID);
     this.setState({
       authenticated: false,
       currentUser: null
@@ -108,8 +111,13 @@ class App extends Component {
                 currentUser={this.state.currentUser}
                 component={Profile}
               />
-              <Route path="/home" component={Homepage} />
-              <Route path="/vote" component={vote} />
+              <PrivateRoute
+                path="/vote"
+                authenticated={this.state.authenticated}
+                currentUser={this.state.currentUser}
+                handleLogout={this.handleLogout}
+                component={vote}
+              />
               <PrivateRoute
                 path="/home"
                 authenticated={this.state.authenticated}

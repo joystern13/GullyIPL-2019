@@ -1,6 +1,7 @@
 package com.gullycricket.authservice.security.oauth2;
 
 import com.gullycricket.authservice.config.AppProperties;
+import com.gullycricket.authservice.security.UserPrincipal;
 import com.gullycricket.authservice.util.CookieUtils;
 import com.gullycricket.authservice.exception.BadRequestException;
 import com.gullycricket.authservice.security.TokenProvider;
@@ -65,8 +66,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String token = tokenProvider.createToken(authentication);
 
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", token)
+                .queryParam("userId",userPrincipal.getId())
                 .build().toUriString();
     }
 

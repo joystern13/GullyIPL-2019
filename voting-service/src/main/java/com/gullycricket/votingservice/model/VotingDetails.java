@@ -62,4 +62,21 @@ public class VotingDetails {
     public void setVotingDate(Date votingDate) {
         this.votingDate = votingDate;
     }
+
+    public VotingDetails(int userId, int matchId, int teamId) {
+        this.userId = userId;
+        this.matchId = matchId;
+        this.teamId = teamId;
+    }
+
+    public VotingDetails() {
+    }
+
+    public VotingDetails(int userVoteId, int userId, int matchId, int teamId, Date votingDate) {
+        this.userVoteId = userVoteId;
+        this.userId = userId;
+        this.matchId = matchId;
+        this.teamId = teamId;
+        this.votingDate = votingDate;
+    }
 }

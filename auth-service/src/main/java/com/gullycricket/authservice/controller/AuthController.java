@@ -51,6 +51,16 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = tokenProvider.createToken(authentication);
+
+        String userId;
+
+        userRepository.findByEmail(loginRequest.getEmail()).ifPresent(user->{
+            System.out.println(token);
+            user.setToken(token);
+            System.out.println(user);
+            userRepository.save(user);
+        });
+
         return ResponseEntity.ok(new AuthResponse(token));
     }
 
