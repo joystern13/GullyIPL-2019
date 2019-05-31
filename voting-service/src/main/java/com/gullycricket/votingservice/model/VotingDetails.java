@@ -75,6 +75,15 @@ public class VotingDetails {
         this.points = points;
     }
 
+    public VotingDetails(int userId, int matchId, int teamId) {
+        this.userId = userId;
+        this.matchId = matchId;
+        this.teamId = teamId;
+    }
+
+    public VotingDetails() {
+    }
+
     public VotingDetails(int userVoteId, int userId, int matchId, int teamId, BigDecimal points, Date votingDate) {
         this.userVoteId = userVoteId;
         this.userId = userId;
@@ -95,4 +104,5 @@ public class VotingDetails {
                 ", votingDate=" + votingDate +
                 '}';
     }
+        
 }

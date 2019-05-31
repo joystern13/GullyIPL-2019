@@ -28,6 +28,9 @@ public class PlayerInfo {
     @Column(name = "team_id")
     private int teamId;
 
+    @Column(name = "image")
+    private String image;
+
     public int getPlayerId() {
         return playerId;
     }
@@ -78,6 +81,14 @@ public class PlayerInfo {
 
     public int getTeamId() {
         return teamId;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public void setTeamId(int teamId) {

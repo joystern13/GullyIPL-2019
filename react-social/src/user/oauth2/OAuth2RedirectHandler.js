@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ACCESS_TOKEN } from "../../constants";
+import { ACCESS_TOKEN, USER_ID } from "../../constants";
 import { Redirect } from "react-router-dom";
 
 class OAuth2RedirectHandler extends Component {
@@ -15,10 +15,13 @@ class OAuth2RedirectHandler extends Component {
 
   render() {
     const token = this.getUrlParameter("token");
+    const userId = this.getUrlParameter("userId");
     const error = this.getUrlParameter("error");
     console.log("token", token);
+    console.log("userId", userId);
     if (token) {
       localStorage.setItem(ACCESS_TOKEN, token);
+      localStorage.setItem(USER_ID, userId);
       return (
         <Redirect
           to={{

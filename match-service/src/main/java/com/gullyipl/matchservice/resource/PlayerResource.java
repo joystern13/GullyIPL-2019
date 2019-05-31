@@ -30,6 +30,9 @@ public class PlayerResource {
     @Value("${cricbuzz.url.players}")
     private String playersUrl;
 
+    @Value("${cricbuzz.url.players.image}")
+    private String imageBaseUrl;
+
     @Autowired
     TeamRepository teamRepository;
     @Autowired
@@ -66,6 +69,7 @@ public class PlayerResource {
                     playerInfo.setRole(player.getRole());
                     playerInfo.setStyle(player.getStyle());
                     playerInfo.setTeamId(teamInfo.getTeamId());
+                    playerInfo.setImage(imageBaseUrl + player.getImage());
                     playerInfos.add(playerInfo);
                 });
 
@@ -86,5 +90,7 @@ public class PlayerResource {
         return "Done!";
     }
 
-
+    public List<PlayerInfo> getPlayersForMatch(){
+        return null;
+    }
 }

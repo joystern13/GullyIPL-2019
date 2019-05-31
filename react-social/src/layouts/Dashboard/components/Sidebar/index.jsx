@@ -48,11 +48,14 @@ class Sidebar extends Component {
         <div className={classes.profile}>
           <Link to="/account">
             <Avatar
-              //alt={this.props.currentUser.name}
+              alt={this.props.currentUser.name}
               className={classes.avatar}
-              //src={this.props.currentUser.imageUrl}
+              src={this.props.currentUser.imageUrl}
             />
           </Link>
+          <Typography className={classes.nameText} variant="h6">
+            {this.props.currentUser.name}
+          </Typography>
         </div>
         <Divider className={classes.profileDivider} />
         <List component="div" disablePadding>
