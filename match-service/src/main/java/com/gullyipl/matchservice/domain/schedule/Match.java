@@ -13,7 +13,7 @@ public class Match {
     private String team2_name;
     private Team team1;
     private Team team2;
-    private int winning_team_id;
+
 
     public int getMatch_id() {
         return match_id;
@@ -103,18 +103,11 @@ public class Match {
         this.team2 = team2;
     }
 
-    public int getWinning_team_id() {
-        return winning_team_id;
-    }
-
-    public void setWinning_team_id(int winning_team_id) {
-        this.winning_team_id = winning_team_id;
-    }
 
     public Match() {
     }
 
-    public Match(int match_id, int series_id, String series_name, String data_path, int alerts, Header header, Venue venue, String team1_name, String team2_name, Team team1, Team team2, int winning_team_id) {
+    public Match(int match_id, int series_id, String series_name, String data_path, int alerts, Header header, Venue venue, String team1_name, String team2_name, Team team1, Team team2) {
         this.match_id = match_id;
         this.series_id = series_id;
         this.series_name = series_name;
@@ -126,7 +119,7 @@ public class Match {
         this.team2_name = team2_name;
         this.team1 = team1;
         this.team2 = team2;
-        this.winning_team_id = winning_team_id;
+
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.gullycricket.votingservice.model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -19,6 +20,9 @@ public class VotingDetails {
 
     @Column(name = "team_id")
     private int teamId;
+
+    @Column(name = "points")
+    private BigDecimal points;
 
     @Column(name = "voting_date")
     private Date votingDate = new Date();
@@ -61,5 +65,34 @@ public class VotingDetails {
 
     public void setVotingDate(Date votingDate) {
         this.votingDate = votingDate;
+    }
+
+    public BigDecimal getPoints() {
+        return points;
+    }
+
+    public void setPoints(BigDecimal points) {
+        this.points = points;
+    }
+
+    public VotingDetails(int userVoteId, int userId, int matchId, int teamId, BigDecimal points, Date votingDate) {
+        this.userVoteId = userVoteId;
+        this.userId = userId;
+        this.matchId = matchId;
+        this.teamId = teamId;
+        this.points = points;
+        this.votingDate = votingDate;
+    }
+
+    @Override
+    public String toString() {
+        return "VotingDetails{" +
+                "userVoteId=" + userVoteId +
+                ", userId=" + userId +
+                ", matchId=" + matchId +
+                ", teamId=" + teamId +
+                ", points=" + points +
+                ", votingDate=" + votingDate +
+                '}';
     }
 }

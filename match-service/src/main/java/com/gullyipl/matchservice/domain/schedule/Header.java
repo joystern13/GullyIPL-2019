@@ -9,6 +9,7 @@ public class Header {
     private String state;
     private String state_title;
     private String status;
+    private int winning_team_id;
 
     public long getStart_time() {
         return start_time;
@@ -74,10 +75,19 @@ public class Header {
         this.status = status;
     }
 
+    public int getWinning_team_id() {
+        return winning_team_id;
+    }
+
+    public void setWinning_team_id(int winning_team_id) {
+        this.winning_team_id = winning_team_id;
+    }
+
+
     public Header() {
     }
 
-    public Header(long start_time, long end_time, String match_desc, String type, int dn, String state, String state_title, String status) {
+    public Header(long start_time, long end_time, String match_desc, String type, int dn, String state, String state_title, String status, int winning_team_id) {
         this.start_time = start_time;
         this.end_time = end_time;
         this.match_desc = match_desc;
@@ -86,6 +96,7 @@ public class Header {
         this.state = state;
         this.state_title = state_title;
         this.status = status;
+        this.winning_team_id = winning_team_id;
     }
 
     @Override
@@ -99,6 +110,7 @@ public class Header {
                 ", state='" + state + '\'' +
                 ", state_title='" + state_title + '\'' +
                 ", status='" + status + '\'' +
+                ", winning_team_id='" + winning_team_id + '\'' +
                 '}';
     }
 }

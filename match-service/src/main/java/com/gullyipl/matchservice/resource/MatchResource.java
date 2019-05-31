@@ -11,14 +11,17 @@ import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,8 +36,15 @@ public class MatchResource {
     @Value("${cricbuzz.url.match}")
     private String matchUrl;
 
+    @Value("${votingservice.url.updateresult}")
+    private String votingServiceUrl;
+
     @Autowired
     private MatchRepository matchRepository;
+
+    private final String COMPLETE = "complete";
+    private final String MOM = "mom";
+    private final String ABANDON = "abandon";
 
     @GetMapping(value = "/reload")
     public String loadMatchInfo() {
@@ -112,17 +122,74 @@ public class MatchResource {
     }
 
     @GetMapping(value = "")
-    public List<MatchInfo> getMatches(){
+    public List<MatchInfo> getMatches() {
         return matchRepository.findAll();
     }
 
     @GetMapping(value = "live")
-    public List<MatchInfo> getLiveMatches(){
+    public List<MatchInfo> getLiveMatches() {
         return matchRepository.findByMatchState("inprogress");
     }
 
     @GetMapping(value = "upcoming")
-    public List<MatchInfo> getUpcomingMatches(){
-        return matchRepository.findByMatchStateInOrderByStartTimeAsc(Arrays.asList("upcomming","preview"));
+    public List<MatchInfo> getUpcomingMatches() {
+        return matchRepository.findByMatchStateInOrderByStartTimeAsc(Arrays.asList("upcomming", "preview"));
     }
+
+    @GetMapping(value = "update")
+    public void updateMatches() {
+        long now = Instant.now().getEpochSecond();
+        System.out.println("current time : " + now);
+        List<MatchInfo> matches = matchRepository.findByMatchStateInAndStartTimeLessThan(Arrays.asList("upcomming", "preview"), now);
+
+        URIBuilder uriBuilder = new URIBuilder();
+        matches.forEach(match -> {
+
+            try {
+
+                uriBuilder.setPath(matchUrl.replace("{match_id}", String.valueOf(match.getMatchId())));
+                URL url = uriBuilder.build().toURL();
+                InputStream is = url.openStream();
+                ObjectMapper mapper = new ObjectMapper();
+
+                BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+                String jsonText = XmlUtils.readAll(rd);
+
+                mapper.configure(
+                        DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                Match matchDetails = mapper.readValue(jsonText, Match.class);
+
+                System.out.println("MAtch details : " + matchDetails);
+
+                if (matchDetails.getHeader().getState().equals(COMPLETE)
+                        || matchDetails.getHeader().getState().equals(MOM)
+                        || matchDetails.getHeader().getState().equals(ABANDON))
+                {
+                    int matchId = matchDetails.getMatch_id();
+                    int winnerTeamId = matchDetails.getHeader().getWinning_team_id();
+                    String matchStatus = matchDetails.getHeader().getStatus();
+
+                    updateMatchResult(matchId, winnerTeamId, matchStatus);
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        });
+    }
+
+    private void updateMatchResult(int matchId, int winnerTeamId, String matchStatus) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        String url = matchUrl.replace("{match_id}", String.valueOf(matchId));
+        url = matchUrl.replace("{win_team_id}", String.valueOf(winnerTeamId));
+
+        Integer activeUsersCount = restTemplate.getForObject(url, Integer.class);
+    }
+
 }
