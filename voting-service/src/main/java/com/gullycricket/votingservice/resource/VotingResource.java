@@ -51,39 +51,51 @@ public class VotingResource {
     }
 
     @GetMapping(value = "/update/{match_id}/{win_team_id}")
-    public void updateMatchVotes(@PathVariable(name = "match_id") final int matchId, @PathVariable(name = "win_team_id") final int winTeamId)
+    public long updateMatchVotes(@PathVariable(name = "match_id") final int matchId, @PathVariable(name = "win_team_id") final int winTeamId)
     {
-        List<VotingDetails> winningVotingDetails = votingDetailsRepository.findByMatchIdAndTeamId(matchId, winTeamId);
-        List<VotingDetails> allTeamsWhoVoted = votingDetailsRepository.findByMatchId(matchId);
-
-        System.out.println("Voting list : " + winningVotingDetails);
-
-        RestTemplate restTemplate = new RestTemplate();
-        Long activeUsersCount = restTemplate.getForObject(userServiceUrl, Long.class);
-        System.out.println("Active Users Count : " + activeUsersCount);
-
-        Predicate<VotingDetails> win = s -> s.getTeamId() == winTeamId;
-        Predicate<VotingDetails> lose = s -> s.getTeamId() != winTeamId;
-        long winningCount = allTeamsWhoVoted.stream().filter(win).count();
-        long losingCount = allTeamsWhoVoted.stream().filter(lose).count();
-
         long winningPoints = 0;
         long losingPoints = 0;
+        try {
 
-        if(winningCount != 0 && losingCount != 0)
+
+            List<VotingDetails> winningVotingDetails = votingDetailsRepository.findByMatchIdAndTeamId(matchId, winTeamId);
+            List<VotingDetails> allTeamsWhoVoted = votingDetailsRepository.findByMatchId(matchId);
+
+            System.out.println("Voting list : " + winningVotingDetails);
+
+            RestTemplate restTemplate = new RestTemplate();
+            Long activeUsersCount = restTemplate.getForObject(userServiceUrl, Long.class);
+            System.out.println("Active Users Count : " + activeUsersCount);
+
+            Predicate<VotingDetails> win = s -> s.getTeamId() == winTeamId;
+            Predicate<VotingDetails> lose = s -> s.getTeamId() != winTeamId;
+            long winningCount = allTeamsWhoVoted.stream().filter(win).count();
+            long losingCount = allTeamsWhoVoted.stream().filter(lose).count();
+
+
+
+            if(winningCount != 0 && losingCount != 0)
+            {
+                winningPoints = (losingCount/winningCount)*MULTIPLIER;
+                losingPoints = -1*MULTIPLIER;
+            }
+
+            final long wonPoints = winningPoints;
+            final long lostPoints = losingPoints;
+
+            allTeamsWhoVoted.stream().filter(win).peek(w -> w.setPoints(BigDecimal.valueOf(wonPoints)));
+            allTeamsWhoVoted.stream().filter(lose).peek(w -> w.setPoints(BigDecimal.valueOf(lostPoints)));
+
+            votingDetailsRepository.saveAll(allTeamsWhoVoted);
+
+        }
+        catch (Exception e)
         {
-            winningPoints = (losingCount/winningCount)*MULTIPLIER;
-            losingPoints = -1*MULTIPLIER;
+            e.printStackTrace();
+            winningPoints = -1;
         }
 
-        final long wonPoints = winningPoints;
-        final long lostPoints = losingPoints;
-
-        allTeamsWhoVoted.stream().filter(win).peek(w -> w.setPoints(BigDecimal.valueOf(wonPoints)));
-        allTeamsWhoVoted.stream().filter(lose).peek(w -> w.setPoints(BigDecimal.valueOf(lostPoints)));
-
-        votingDetailsRepository.saveAll(allTeamsWhoVoted);
-
+        return winningPoints;
     }
 
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -168,7 +169,19 @@ public class MatchResource {
                     int winnerTeamId = matchDetails.getHeader().getWinning_team_id();
                     String matchStatus = matchDetails.getHeader().getStatus();
 
-                    updateMatchResult(matchId, winnerTeamId, matchStatus);
+                    long winningPoints = updateMatchResult(matchId, winnerTeamId);
+
+                    if(winningPoints != -1)//success
+                    {
+                        match.setMatchState(matchDetails.getHeader().getState());
+                        match.setWinnerTeamId(winnerTeamId);
+                        match.setPoints(BigDecimal.valueOf(winningPoints));
+                        match.setResultDesc(matchStatus);
+
+                        matchRepository.save(match);
+                    }
+                    else
+                        System.out.println("Error in updating Matchid : " + matchId);
                 }
 
             } catch (MalformedURLException e) {
@@ -182,13 +195,11 @@ public class MatchResource {
         });
     }
 
-    private void updateMatchResult(int matchId, int winnerTeamId, String matchStatus) {
-        RestTemplate restTemplate = new RestTemplate();
+    private long updateMatchResult(int matchId, int winnerTeamId) {
 
-        String url = matchUrl.replace("{match_id}", String.valueOf(matchId));
-        url = matchUrl.replace("{win_team_id}", String.valueOf(winnerTeamId));
+        String url = votingServiceUrl.replace("{match_id}", String.valueOf(matchId)).replace("{win_team_id}", String.valueOf(winnerTeamId));
 
-        Integer activeUsersCount = restTemplate.getForObject(url, Integer.class);
+        return new RestTemplate().getForObject(url, Long.class);
     }
 
 }

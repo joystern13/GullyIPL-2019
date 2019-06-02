@@ -1,6 +1,7 @@
 package com.gullycricket.matchservice.model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 public class MatchInfo {
@@ -43,6 +44,8 @@ public class MatchInfo {
     @Column(name = "winner_team_id")
     private int winnerTeamId;
 
+    @Column(name = "points")
+    private BigDecimal points;
 
     public int getMatchId() {
         return matchId;
@@ -140,10 +143,18 @@ public class MatchInfo {
         this.winnerTeamId = winnerTeamId;
     }
 
+    public BigDecimal getPoints() {
+        return points;
+    }
+
+    public void setPoints(BigDecimal points) {
+        this.points = points;
+    }
+
     public MatchInfo() {
     }
 
-    public MatchInfo(int matchId, String matchDescription, long startTime, long endTime, int dayNightFlag, String venueName, String venueLocation, String matchState, String resultDesc, TeamInfo team1Info, TeamInfo team2Info, int winnerTeamId) {
+    public MatchInfo(int matchId, String matchDescription, long startTime, long endTime, int dayNightFlag, String venueName, String venueLocation, String matchState, String resultDesc, TeamInfo team1Info, TeamInfo team2Info, int winnerTeamId, BigDecimal points) {
         this.matchId = matchId;
         this.matchDescription = matchDescription;
         this.startTime = startTime;
@@ -156,5 +167,6 @@ public class MatchInfo {
         this.team1Info = team1Info;
         this.team2Info = team2Info;
         this.winnerTeamId = winnerTeamId;
+        this.points = points;
     }
 }
