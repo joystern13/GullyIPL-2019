@@ -16,7 +16,7 @@ import { Portlet, PortletContent } from "../components";
 
 // Component styles
 import styles from "./styles";
-import { USER_ID, VOTING_BASE_URL } from "../constants";
+import { USER_ID, VOTING_BASE_URL, MATCH_BASE_URL } from "../constants";
 
 import { castVote, getUserVotes } from "../util/APIUtils";
 
@@ -72,7 +72,7 @@ class VoteForMatch extends Component {
     //   .then(function(response) {
     //     console.log(response);
     //   });
-    fetch("http://localhost:8181/gullyipl/matches/upcoming")
+    fetch(MATCH_BASE_URL + "/upcoming")
       .then(res => res.json())
       .then(
         result => {
