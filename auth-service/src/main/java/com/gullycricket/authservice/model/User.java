@@ -33,6 +33,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;
 
+    @Column(nullable = false)
+    private int active;
+
     @Column
     private String token;
 
@@ -108,5 +111,13 @@ public class User {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
     }
 }

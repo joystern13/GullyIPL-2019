@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -23,8 +24,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -46,6 +49,8 @@ public class MatchResource {
     private final String COMPLETE = "complete";
     private final String MOM = "mom";
     private final String ABANDON = "abandon";
+    private final String UPCOMING = "upcoming";
+    private final String PREVIEW = "preview";
 
     @GetMapping(value = "/reload")
     public String loadMatchInfo() {
@@ -141,7 +146,7 @@ public class MatchResource {
     public ResponseEntity<?> updateMatches() {
         long now = Instant.now().getEpochSecond();
         System.out.println("current time : " + now);
-        List<MatchInfo> matches = matchRepository.findByMatchStateInAndStartTimeLessThan(Arrays.asList("upcoming", "preview"), now);
+        List<MatchInfo> matches = matchRepository.findByMatchStateInAndStartTimeLessThan(Arrays.asList(UPCOMING, PREVIEW), now);
         System.out.println("matches : " + matches);
         URIBuilder uriBuilder = new URIBuilder();
         matches.forEach(match -> {
@@ -205,4 +210,27 @@ public class MatchResource {
         return new RestTemplate().getForObject(url, Double.class);
     }
 
+    @GetMapping(value = "/{match_id}/allowvote")
+    public String allowVoting(@PathVariable("match_id")final int matchId)
+    {
+        String allowVoting = "";
+        try {
+
+            Instant now = Instant.now();
+            Instant votingTime = now.plus(60, ChronoUnit.MINUTES);
+            System.out.println("votingTime : " + votingTime);
+            Optional<MatchInfo> matchInfo = matchRepository.findByMatchIdAndStartTimeGreaterThan(matchId, votingTime.getEpochSecond());
+
+            if(matchInfo.isPresent())
+                allowVoting = "YES";
+            else
+                allowVoting = "NO";
+
+            System.out.println("allowVoting : " + matchId + " : " + allowVoting);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return allowVoting;
+    }
 }

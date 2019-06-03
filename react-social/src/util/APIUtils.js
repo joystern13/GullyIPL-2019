@@ -87,7 +87,7 @@ export function castVote(voteDetails) {
   return requestUnsecure({
     url: VOTING_BASE_URL + "/add",
     method: "POST",
-    body: JSON.stringify(voteDetails)
+    body: voteDetails
   });
 }
 

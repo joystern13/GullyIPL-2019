@@ -3,9 +3,11 @@ package com.gullycricket.authservice.payload;
 public class AuthResponse {
     private String accessToken;
     private String tokenType = "Bearer";
+    private Long id;
 
-    public AuthResponse(String accessToken) {
+    public AuthResponse(String accessToken, Long id) {
         this.accessToken = accessToken;
+        this.id = id;
     }
 
     public String getAccessToken() {
@@ -22,5 +24,13 @@ public class AuthResponse {
 
     public void setTokenType(String tokenType) {
         this.tokenType = tokenType;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

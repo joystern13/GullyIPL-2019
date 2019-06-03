@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -52,16 +53,20 @@ public class AuthController {
 
         String token = tokenProvider.createToken(authentication);
 
-        String userId;
+        Long userId = 0L;
 
-        userRepository.findByEmail(loginRequest.getEmail()).ifPresent(user->{
+        Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
+        if(optionalUser.isPresent())
+            userId = optionalUser.get().getId();
+
+        /*userRepository.findByEmail(loginRequest.getEmail()).ifPresent(user->{
             System.out.println(token);
             user.setToken(token);
             System.out.println(user);
             userRepository.save(user);
-        });
+        });*/
 
-        return ResponseEntity.ok(new AuthResponse(token));
+        return ResponseEntity.ok(new AuthResponse(token, userId));
     }
 
     @PostMapping("/signup")

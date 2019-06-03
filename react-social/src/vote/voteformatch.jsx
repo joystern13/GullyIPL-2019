@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./radio_css.css";
+import Alert from "react-s-alert";
 
 // Externals
 import classNames from "classnames";
@@ -28,58 +29,65 @@ class VoteForMatch extends Component {
       error: null,
       isLoaded: false,
       matches: [],
-      matchVote: []
+      matchVoteMap: new Map()
     };
   }
 
   handleOptionChange = changeEvent => {
+    console.log(this.state);
+    console.log(changeEvent);
     var json = JSON.parse(changeEvent);
 
-    const { matchVote } = this.state;
-    matchVote[json.id] = JSON.stringify(json);
+    const { matchVoteMap } = this.state;
+    matchVoteMap.set(json.matchId, changeEvent);
     this.setState({
-      matchVote: matchVote
+      matchVoteMap: matchVoteMap
     });
 
-    var vote = {
-      userId: json.userId,
-      matchId: json.matchId,
-      teamId: json.teamId
-    };
-    castVote(vote)
-      .then(result => console.log(result))
+    castVote(changeEvent)
+      .then(result => {
+        if (result.status == 200) Alert.success("Voting Successful");
+        else if (result.status == 403) {
+          Alert.error("Voting Gates Closed");
+        }
+      })
       .catch(error => {
         console.log(error);
       });
-    // console.log("matchId: " + json.matchId);
-    // console.log(changeEvent);
-    // var { matchVote } = this.state;
-    // matchVote.set(json.matchId, json);
-    // this.setState(
-    //   {
-    //     matchVote: matchVote
-    //   },
-    //   () => console.log(this.state)
-    // );
-    // console.log(matchVote);
-    // console.log(this.state);
   };
 
   componentDidMount() {
-    console.log("User Id: " + localStorage.getItem(USER_ID));
+    var votesMap = new Map();
+    getUserVotes()
+      .then(res => res.json())
+      .then(result => {
+        result.map(vote => {
+          votesMap.set(vote.matchId, vote.teamId);
+        });
+      });
 
     fetch(MATCH_BASE_URL + "/upcoming")
       .then(res => res.json())
       .then(
         result => {
+          const { matchVoteMap } = this.state;
+          result.map(match => {
+            matchVoteMap.set(
+              match.matchId,
+              JSON.stringify({
+                userId: localStorage.getItem(USER_ID),
+                matchId: match.matchId,
+                teamId: votesMap.get(match.matchId)
+              })
+            );
+          });
           this.setState({
             isLoaded: true,
-            matches: result
+            matches: result,
+            matchVoteMap: matchVoteMap
           });
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
+
         error => {
           this.setState({
             isLoaded: true,
@@ -93,9 +101,6 @@ class VoteForMatch extends Component {
         result => {
           console.log(result);
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
         error => {
           console.log(error);
         }
@@ -107,7 +112,7 @@ class VoteForMatch extends Component {
     const { isLoaded, matches } = this.state;
 
     const rootClassName = classNames(classes.root, className);
-    var i = -1;
+    console.log("state value on initial render", this.state);
 
     // if (error) {
     //   return <div>Error: {error.message}</div>;
@@ -119,16 +124,12 @@ class VoteForMatch extends Component {
         <div className="container">
           <form>
             {matches.map(match => {
-              i++;
-              this.state.matchVote.push(match.matchId);
               var value1 = {
-                id: i,
                 userId: localStorage.getItem(USER_ID),
                 matchId: match.matchId,
                 teamId: match.team1Info.teamId
               };
               var value2 = {
-                id: i,
                 userId: localStorage.getItem(USER_ID),
                 matchId: match.matchId,
                 teamId: match.team2Info.teamId
@@ -162,7 +163,7 @@ class VoteForMatch extends Component {
                           ]}
                           name={"rdbTeam" + match.matchId}
                           onChange={this.handleOptionChange}
-                          value={this.state.matchVote[i]}
+                          value={this.state.matchVoteMap.get(match.matchId)}
                         />
                       </PortletContent>
                     </Portlet>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Login.css";
-import { GOOGLE_AUTH_URL, ACCESS_TOKEN } from "../../constants";
+import { GOOGLE_AUTH_URL, ACCESS_TOKEN, USER_ID } from "../../constants";
 import { login } from "../../util/APIUtils";
 import { Link, Redirect } from "react-router-dom";
 import googleLogo from "../../img/google-logo.png";
@@ -108,6 +108,7 @@ class LoginForm extends Component {
     login(loginRequest)
       .then(response => {
         localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+        localStorage.setItem(USER_ID, response.id);
         Alert.success("You're successfully logged in!");
         this.props.history.push("/");
       })

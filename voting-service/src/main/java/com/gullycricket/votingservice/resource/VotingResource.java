@@ -4,6 +4,7 @@ import com.gullycricket.votingservice.repository.VotingDetailsRepository;
 import com.gullycricket.votingservice.model.VotingDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -21,21 +22,39 @@ public class VotingResource {
     VotingDetailsRepository votingDetailsRepository;
 
     private final int MULTIPLIER = 1;
+    private final String STATE_UPCOMING = "upcoming";
+    private final String STATE_PREVIEW = "preview";
 
     @Value("${userservice.url.activeusers}")
     private String userServiceUrl;
 
+    @Value("${matchservice.url.matchstate}")
+    private String matchStateUrl;
+
     @PostMapping(value = "/add")
-    public ResponseEntity<String> castVote(@RequestBody VotingDetails votingDetails){
+    public ResponseEntity castVote(@RequestBody VotingDetails votingDetails){
+
+        //check match state first
+
+        RestTemplate restTemplate = new RestTemplate();
+        String url = matchStateUrl.replace("{match_id}", String.valueOf(votingDetails.getMatchId()));
+        String allowVoting = restTemplate.getForObject(url, String.class);
+        System.out.println("allowVoting : " + allowVoting);
+
+        if(!allowVoting.equals("YES"))
+        {
+            return new ResponseEntity("NO",HttpStatus.FORBIDDEN);
+        }
+
         VotingDetails existingVote = votingDetailsRepository.findByUserIdAndMatchId(votingDetails.getUserId(),votingDetails.getMatchId());
         if (existingVote != null){
             existingVote.setTeamId(votingDetails.getTeamId());
             votingDetailsRepository.save(existingVote);
-            return ResponseEntity.ok("Vote updated successfully");
+            return new ResponseEntity("Vote created successfully",HttpStatus.OK);
         }
         else{
             votingDetailsRepository.save(votingDetails);
-            return ResponseEntity.ok("Vote created successfully");
+            return new ResponseEntity("Vote created successfully",HttpStatus.OK);
         }
     }
 

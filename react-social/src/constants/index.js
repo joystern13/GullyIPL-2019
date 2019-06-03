@@ -1,6 +1,6 @@
 // export const API_BASE_URL = "http://localhost:8080";
-// export const MATCH_BASE_URL = "http://localhost:8181/gullyipl/matches";
-// export const VOTING_BASE_URL = "http://localhost:8182/gullyipl/votes";
+// export const MATCH_BASE_URL = "http://localhost:8181/gullycricket/matches";
+// export const VOTING_BASE_URL = "http://localhost:8182/gullycricket/votes";
 export const API_BASE_URL = "https://auth-service-dot-gullyipl.appspot.com";
 export const MATCH_BASE_URL =
   "https://match-service-dot-gullyipl.appspot.com/gullycricket/matches/";

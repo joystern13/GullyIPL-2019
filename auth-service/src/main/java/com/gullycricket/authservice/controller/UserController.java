@@ -49,4 +49,8 @@ public class UserController {
 
         return userData;
     }
+    @GetMapping("/active")
+    public Long getActiveUsersCount(){
+        return userRepository.countByActive(1);
+    }
 }
