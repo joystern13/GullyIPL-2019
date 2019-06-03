@@ -67,11 +67,7 @@ class VoteForMatch extends Component {
 
   componentDidMount() {
     console.log("User Id: " + localStorage.getItem(USER_ID));
-    // axios
-    //   .get("http://mapps.cricbuzz.com/cbzios/series/2697/matches")
-    //   .then(function(response) {
-    //     console.log(response);
-    //   });
+
     fetch(MATCH_BASE_URL + "/upcoming")
       .then(res => res.json())
       .then(

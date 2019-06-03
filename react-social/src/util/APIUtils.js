@@ -62,6 +62,11 @@ export function getUpcomingMatches() {
   return fetch(MATCH_BASE_URL + "/upcoming");
 }
 
+export function updateMatches() {
+  console.log("updating matches");
+  return fetch(MATCH_BASE_URL + "/update");
+}
+
 export function login(loginRequest) {
   return request({
     url: API_BASE_URL + "/auth/login",

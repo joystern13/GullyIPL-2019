@@ -6,7 +6,7 @@ import Profile from "../user/profile/Profile";
 import OAuth2RedirectHandler from "../user/oauth2/OAuth2RedirectHandler";
 import NotFound from "../common/NotFound";
 import LoadingIndicator from "../common/LoadingIndicator";
-import { getCurrentUser } from "../util/APIUtils";
+import { getCurrentUser, updateMatches } from "../util/APIUtils";
 import { ACCESS_TOKEN, USER_ID } from "../constants";
 import PrivateRoute from "../common/PrivateRoute";
 import Alert from "react-s-alert";
@@ -69,6 +69,26 @@ class App extends Component {
     console.log(this.state.currentUser);
   }
 
+  updateAllMatches() {
+    this.setState({
+      loading: true
+    });
+
+    updateMatches()
+      .then(response => {
+        this.setState({
+          loading: false
+        });
+        console.log("All Matches Updated");
+      })
+      .catch(error => {
+        this.setState({
+          loading: false
+        });
+        console.log("Error in updating matches");
+      });
+  }
+
   handleLogout = () => {
     localStorage.removeItem(ACCESS_TOKEN);
     localStorage.removeItem(USER_ID);
@@ -82,6 +102,7 @@ class App extends Component {
   componentDidMount() {
     console.log("in componentDidMount");
     this.loadCurrentlyLoggedInUser();
+    this.updateAllMatches();
   }
 
   render() {
