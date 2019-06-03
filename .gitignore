@@ -2,3 +2,8 @@
 react-social/src/constants/index.js
 react-social/src/constants/index.js
 voting-service/src/main/java/com/gullycricket/votingservice/Test.java
+voting-service/src/main/resources/application.yml
+match-service/src/main/resources/application.properties
+match-service/src/main/resources/gullyipl-20dfde7c1bd7.json
+voting-service/src/main/resources/gullyipl-20dfde7c1bd7.json
+match-service/src/main/resources/application.properties

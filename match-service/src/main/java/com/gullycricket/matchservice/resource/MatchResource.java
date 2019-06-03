@@ -134,7 +134,7 @@ public class MatchResource {
 
     @GetMapping(value = "upcoming")
     public List<MatchInfo> getUpcomingMatches() {
-        return matchRepository.findByMatchStateInOrderByStartTimeAsc(Arrays.asList("upcomming", "preview"));
+        return matchRepository.findByMatchStateInOrderByStartTimeAsc(Arrays.asList("upcoming", "preview"));
     }
 
     @GetMapping(value = "update")
