@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/gullycricket/votes")
@@ -51,17 +52,16 @@ public class VotingResource {
     }
 
     @GetMapping(value = "/update/{match_id}/{win_team_id}")
-    public long updateMatchVotes(@PathVariable(name = "match_id") final int matchId, @PathVariable(name = "win_team_id") final int winTeamId)
+    public double updateMatchVotes(@PathVariable(name = "match_id") final int matchId, @PathVariable(name = "win_team_id") final int winTeamId)
     {
-        long winningPoints = 0;
-        long losingPoints = 0;
+        double winningPoints = 0;
+        double losingPoints = 0;
         try {
 
 
-            List<VotingDetails> winningVotingDetails = votingDetailsRepository.findByMatchIdAndTeamId(matchId, winTeamId);
-            List<VotingDetails> allTeamsWhoVoted = votingDetailsRepository.findByMatchId(matchId);
+            List<VotingDetails> allUsersWhoVoted = votingDetailsRepository.findByMatchId(matchId);
 
-            System.out.println("Voting list : " + winningVotingDetails);
+            System.out.println("Voting list : " + allUsersWhoVoted);
 
             RestTemplate restTemplate = new RestTemplate();
             Long activeUsersCount = restTemplate.getForObject(userServiceUrl, Long.class);
@@ -69,24 +69,32 @@ public class VotingResource {
 
             Predicate<VotingDetails> win = s -> s.getTeamId() == winTeamId;
             Predicate<VotingDetails> lose = s -> s.getTeamId() != winTeamId;
-            long winningCount = allTeamsWhoVoted.stream().filter(win).count();
-            long losingCount = allTeamsWhoVoted.stream().filter(lose).count();
+            int winningCount = Math.toIntExact(allUsersWhoVoted.stream().filter(win).count());
+            int losingCount = Math.toIntExact(allUsersWhoVoted.stream().filter(lose).count());
 
+            System.out.println("winningCount : " + winningCount + " : " + losingCount);
 
-
-            if(winningCount != 0 && losingCount != 0)
+            if(winningCount == 0 || losingCount == 0)
             {
-                winningPoints = (losingCount/winningCount)*MULTIPLIER;
+                winningPoints = losingPoints = 0;
+            }
+            else if(winningCount != 0 && losingCount != 0)
+            {
+                winningPoints = ((double)losingCount/winningCount)*MULTIPLIER;
                 losingPoints = -1*MULTIPLIER;
             }
 
-            final long wonPoints = winningPoints;
-            final long lostPoints = losingPoints;
+            System.out.println("points : " + winningPoints + " : " + losingPoints);
 
-            allTeamsWhoVoted.stream().filter(win).peek(w -> w.setPoints(BigDecimal.valueOf(wonPoints)));
-            allTeamsWhoVoted.stream().filter(lose).peek(w -> w.setPoints(BigDecimal.valueOf(lostPoints)));
+            final double wonPoints = winningPoints;
+            final double lostPoints = losingPoints;
 
-            votingDetailsRepository.saveAll(allTeamsWhoVoted);
+            allUsersWhoVoted.stream().filter(win).peek(w -> w.setPoints(BigDecimal.valueOf(wonPoints))).collect(Collectors.toList());
+            allUsersWhoVoted.stream().filter(lose).peek(w -> w.setPoints(BigDecimal.valueOf(lostPoints))).collect(Collectors.toList());
+
+            System.out.println("Updated Voting list : " + allUsersWhoVoted);
+
+            votingDetailsRepository.saveAll(allUsersWhoVoted);
 
         }
         catch (Exception e)

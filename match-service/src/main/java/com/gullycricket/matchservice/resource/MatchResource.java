@@ -10,6 +10,7 @@ import com.gullycricket.matchservice.utilities.XmlUtils;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -137,11 +138,11 @@ public class MatchResource {
     }
 
     @GetMapping(value = "update")
-    public void updateMatches() {
+    public ResponseEntity<?> updateMatches() {
         long now = Instant.now().getEpochSecond();
         System.out.println("current time : " + now);
-        List<MatchInfo> matches = matchRepository.findByMatchStateInAndStartTimeLessThan(Arrays.asList("upcomming", "preview"), now);
-
+        List<MatchInfo> matches = matchRepository.findByMatchStateInAndStartTimeLessThan(Arrays.asList("upcoming", "preview"), now);
+        System.out.println("matches : " + matches);
         URIBuilder uriBuilder = new URIBuilder();
         matches.forEach(match -> {
 
@@ -169,7 +170,7 @@ public class MatchResource {
                     int winnerTeamId = matchDetails.getHeader().getWinning_team_id();
                     String matchStatus = matchDetails.getHeader().getStatus();
 
-                    long winningPoints = updateMatchResult(matchId, winnerTeamId);
+                    double winningPoints = updateMatchResult(matchId, winnerTeamId);
 
                     if(winningPoints != -1)//success
                     {
@@ -193,13 +194,15 @@ public class MatchResource {
             }
 
         });
+
+        return ResponseEntity.ok("SUCCESS");
     }
 
-    private long updateMatchResult(int matchId, int winnerTeamId) {
+    private double updateMatchResult(int matchId, int winnerTeamId) {
 
         String url = votingServiceUrl.replace("{match_id}", String.valueOf(matchId)).replace("{win_team_id}", String.valueOf(winnerTeamId));
 
-        return new RestTemplate().getForObject(url, Long.class);
+        return new RestTemplate().getForObject(url, Double.class);
     }
 
 }
