@@ -52,6 +52,7 @@ public class MatchResource {
     private final String ABANDON = "abandon";
     private final String UPCOMING = "upcoming";
     private final String PREVIEW = "preview";
+    private final String INPROGRESS = "inprogress";
 
     @GetMapping(value = "/reload")
     public String loadMatchInfo() {
@@ -230,6 +231,52 @@ public class MatchResource {
         String allowVoting = "";
         try {
 
+            try {
+
+                URIBuilder uriBuilder = new URIBuilder();
+                uriBuilder.setPath(matchUrl.replace("{match_id}", String.valueOf(matchId)));
+                URL url = uriBuilder.build().toURL();
+                InputStream inputStream = url.openStream();
+
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName("UTF-8")));
+                String matchStr = XmlUtils.readAll(bufferedReader);
+                System.out.println(matchStr);
+                ObjectMapper mapper1 = new ObjectMapper();
+                mapper1.configure(
+                        DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+                Match matchDetails = mapper1.readValue(matchStr, Match.class);
+
+                System.out.println("matchDetails.getHeader().getState() : " + matchDetails.getHeader().getState());
+
+                if(!matchDetails.getHeader().getState().equals(TOSS)
+                        && !matchDetails.getHeader().getState().equals(MOM)
+                        && !matchDetails.getHeader().getState().equals(INPROGRESS))
+                    allowVoting = "YES";
+                else
+                    allowVoting = "NO";
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("allowVoting : " + matchId + " : " + allowVoting);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return allowVoting;
+    }
+    /*@GetMapping(value = "/{match_id}/allowvote")
+    public String allowVoting(@PathVariable("match_id")final int matchId)
+    {
+        String allowVoting = "";
+        try {
+
             Instant now = Instant.now();
             Instant votingTime = now.plus(60, ChronoUnit.MINUTES);
             System.out.println("votingTime : " + votingTime);
@@ -246,5 +293,5 @@ public class MatchResource {
             e.printStackTrace();
         }
         return allowVoting;
-    }
+    }*/
 }
