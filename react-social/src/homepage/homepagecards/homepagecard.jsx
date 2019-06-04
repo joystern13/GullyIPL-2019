@@ -9,7 +9,6 @@ import styles from "./styles";
 class HomepageCard extends Component {
   constructor(props) {
     super(props);
-    console.log("Homepage card", props);
   }
   state = {};
   render() {

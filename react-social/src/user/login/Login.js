@@ -109,8 +109,11 @@ class LoginForm extends Component {
       .then(response => {
         localStorage.setItem(ACCESS_TOKEN, response.accessToken);
         localStorage.setItem(USER_ID, response.id);
-        Alert.success("You're successfully logged in!");
-        this.props.history.push("/");
+        this.props.loadCurrentlyLoggedInUser();
+        this.props.history.push({
+          pathname: "/home",
+          state: { authenticated: true }
+        });
       })
       .catch(error => {
         Alert.error(

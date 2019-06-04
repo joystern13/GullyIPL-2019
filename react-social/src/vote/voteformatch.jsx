@@ -17,7 +17,7 @@ import { Portlet, PortletContent } from "../components";
 
 // Component styles
 import styles from "./styles";
-import { USER_ID, VOTING_BASE_URL, MATCH_BASE_URL } from "../constants";
+import { USER_ID, MATCH_BASE_URL } from "../constants";
 
 import { castVote, getUserVotes } from "../util/APIUtils";
 
@@ -34,8 +34,6 @@ class VoteForMatch extends Component {
   }
 
   handleOptionChange = changeEvent => {
-    console.log(this.state);
-    console.log(changeEvent);
     var json = JSON.parse(changeEvent);
 
     const { matchVoteMap } = this.state;
@@ -46,8 +44,8 @@ class VoteForMatch extends Component {
 
     castVote(changeEvent)
       .then(result => {
-        if (result.status == 200) Alert.success("Voting Successful");
-        else if (result.status == 403) {
+        if (result.status === 200) Alert.success("Voting Successful");
+        else if (result.status === 403) {
           Alert.error("Voting Gates Closed");
         }
       })
@@ -64,8 +62,6 @@ class VoteForMatch extends Component {
         result.map(vote => {
           votesMap.set(vote.matchId, vote.teamId);
         });
-
-        console.log("votesMap1 : ", votesMap);
 
         fetch(MATCH_BASE_URL + "/upcoming")
           .then(res => res.json())
@@ -104,11 +100,7 @@ class VoteForMatch extends Component {
     const { isLoaded, matches } = this.state;
 
     const rootClassName = classNames(classes.root, className);
-    console.log("state value on initial render", this.state);
 
-    // if (error) {
-    //   return <div>Error: {error.message}</div>;
-    // } else
     if (!isLoaded) {
       return <div>Loading...</div>;
     } else {
@@ -163,28 +155,6 @@ class VoteForMatch extends Component {
                 </div>
               );
             })}
-            {/* <Typography variant="body1" className="matchText">
-                1st Warm-up game County Ground Bristol, England, 24 May 2019
-                10:30 AM GMT
-              </Typography>
-              <ReactRadioButtonGroup
-                options={[
-                  {
-                    value: "AFG",
-                    label: "AFG",
-                    itemClassName: "team1",
-                    labelClassName: "drinkcard-cc AFG"
-                  },
-                  {
-                    value: "AUS",
-                    label: "AUS",
-                    itemClassName: "team2",
-                    labelClassName: "drinkcard-cc AUS"
-                  }
-                ]}
-                name="rdbTeam"
-                isStateful={true}
-              /> */}
           </form>
         </div>
       );

@@ -63,7 +63,6 @@ export function getUpcomingMatches() {
 }
 
 export function updateMatches() {
-  console.log("updating matches");
   return fetch(MATCH_BASE_URL + "/update");
 }
 

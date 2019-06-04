@@ -26,8 +26,6 @@ class Dashboard extends Component {
     this.state = {
       isOpen: !isMobile
     };
-
-    console.log("Dashboard", props);
   }
 
   handleClose = () => {

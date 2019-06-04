@@ -110,6 +110,10 @@ class App extends Component {
       return <LoadingIndicator />;
     }
 
+    if (localStorage.getItem(ACCESS_TOKEN) && !this.state.authenticated) {
+      this.loadCurrentlyLoggedInUser();
+    }
+
     console.log("App.js", this.state);
     console.log("App.js", this.props);
 
@@ -156,7 +160,11 @@ class App extends Component {
               <Route
                 path="/login"
                 render={props => (
-                  <Login authenticated={this.state.authenticated} {...props} />
+                  <Login
+                    authenticated={this.state.authenticated}
+                    loadCurrentlyLoggedInUser={this.loadCurrentlyLoggedInUser}
+                    {...props}
+                  />
                 )}
               />
               <Route
