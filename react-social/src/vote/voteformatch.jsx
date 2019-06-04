@@ -64,47 +64,39 @@ class VoteForMatch extends Component {
         result.map(vote => {
           votesMap.set(vote.matchId, vote.teamId);
         });
+
+        console.log("votesMap1 : ", votesMap);
+
+        fetch(MATCH_BASE_URL + "/upcoming")
+          .then(res => res.json())
+          .then(
+            result => {
+              const { matchVoteMap } = this.state;
+              result.map(match => {
+                matchVoteMap.set(
+                  match.matchId,
+                  JSON.stringify({
+                    userId: localStorage.getItem(USER_ID),
+                    matchId: match.matchId,
+                    teamId: votesMap.get(match.matchId)
+                  })
+                );
+              });
+              this.setState({
+                isLoaded: true,
+                matches: result,
+                matchVoteMap: matchVoteMap
+              });
+            },
+
+            error => {
+              this.setState({
+                isLoaded: true,
+                error
+              });
+            }
+          );
       });
-
-    fetch(MATCH_BASE_URL + "/upcoming")
-      .then(res => res.json())
-      .then(
-        result => {
-          const { matchVoteMap } = this.state;
-          result.map(match => {
-            matchVoteMap.set(
-              match.matchId,
-              JSON.stringify({
-                userId: localStorage.getItem(USER_ID),
-                matchId: match.matchId,
-                teamId: votesMap.get(match.matchId)
-              })
-            );
-          });
-          this.setState({
-            isLoaded: true,
-            matches: result,
-            matchVoteMap: matchVoteMap
-          });
-        },
-
-        error => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      );
-    fetch(VOTING_BASE_URL + "/get/" + localStorage.getItem(USER_ID))
-      .then(res => res.json())
-      .then(
-        result => {
-          console.log(result);
-        },
-        error => {
-          console.log(error);
-        }
-      );
   }
 
   render() {
