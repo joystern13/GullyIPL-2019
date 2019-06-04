@@ -22,6 +22,7 @@ import theme from "../theme";
 
 import Homepage from "../homepage/homepage";
 import vote from "../vote/vote";
+import votestats from "../vote/votestats";
 import ManOfTheMatch from "../mom/mom";
 
 class App extends Component {
@@ -138,6 +139,13 @@ class App extends Component {
                 currentUser={this.state.currentUser}
                 handleLogout={this.handleLogout}
                 component={vote}
+              />
+              <PrivateRoute
+                path="/votestats"
+                authenticated={this.state.authenticated}
+                currentUser={this.state.currentUser}
+                handleLogout={this.handleLogout}
+                component={votestats}
               />
               <PrivateRoute
                 path="/home"

@@ -93,6 +93,21 @@ class Sidebar extends Component {
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
+            to="/votestats"
+            style={{ textDecoration: "none" }}
+          >
+            <ListItemIcon className={classes.listItemIcon}>
+              <VoteIcon />
+            </ListItemIcon>
+            <ListItemText
+              classes={{ primary: classes.listItemText }}
+              primary="Vote Stats"
+            />
+          </ListItem>
+          <ListItem
+            activeClassName={classes.activeListItem}
+            className={classes.listItem}
+            component={NavLink}
             to="/mom"
             style={{ textDecoration: "none" }}
           >
