@@ -48,6 +48,7 @@ public class MatchResource {
 
     private final String COMPLETE = "complete";
     private final String MOM = "mom";
+    private final String TOSS = "toss";
     private final String ABANDON = "abandon";
     private final String UPCOMING = "upcoming";
     private final String PREVIEW = "preview";
@@ -139,7 +140,12 @@ public class MatchResource {
 
     @GetMapping(value = "upcoming")
     public List<MatchInfo> getUpcomingMatches() {
-        return matchRepository.findByMatchStateInOrderByStartTimeAsc(Arrays.asList("upcoming", "preview"));
+        return matchRepository.findByMatchStateInOrderByStartTimeAsc(Arrays.asList(UPCOMING, PREVIEW));
+    }
+
+    @GetMapping(value = "votingclosedmatches")
+    public List<MatchInfo> getVotingClosedMatches() {
+        return matchRepository.findByMatchStateNotIn(Arrays.asList(UPCOMING, PREVIEW));
     }
 
     @GetMapping(value = "update")
@@ -188,6 +194,14 @@ public class MatchResource {
                     }
                     else
                         System.out.println("Error in updating Matchid : " + matchId);
+                }
+                else
+                {
+                    if(!match.getMatchState().equals(matchDetails.getHeader().getState()))
+                    {
+                        match.setMatchState(matchDetails.getHeader().getState());
+                        matchRepository.save(match);
+                    }
                 }
 
             } catch (MalformedURLException e) {

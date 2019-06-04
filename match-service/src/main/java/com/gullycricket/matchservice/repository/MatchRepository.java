@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface MatchRepository extends JpaRepository<MatchInfo,Integer> {
     List<MatchInfo> findByMatchState(String state);
 
+    List<MatchInfo> findByMatchStateNotIn(List<String> states);
+
 	List<MatchInfo> findByMatchStateInOrderByStartTimeAsc(List<String> states);
 
     List<MatchInfo> findByMatchStateInAndStartTimeLessThan(List<String> states, long startTime);
