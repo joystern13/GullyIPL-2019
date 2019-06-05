@@ -120,7 +120,7 @@ class Sidebar extends Component {
             />
           </ListItem>
         </List>
-        <Divider className={classes.listDivider} />
+        {/*<Divider className={classes.listDivider} />
         <List
           component="div"
           disablePadding
@@ -145,7 +145,7 @@ class Sidebar extends Component {
               primary="Customer support"
             />
           </ListItem>
-        </List>
+        </List>*/}
       </nav>
     );
   }

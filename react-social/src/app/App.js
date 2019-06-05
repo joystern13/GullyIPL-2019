@@ -119,7 +119,10 @@ class App extends Component {
 
     return (
       <ThemeProvider theme={theme}>
-        <div className="app">
+        <div
+          className="app"
+          style={{ background: "linear-gradient(to right, #000428, #006e92)" }}
+        >
           <div className="app-body">
             <Switch>
               <PrivateRoute
