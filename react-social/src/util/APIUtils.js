@@ -62,6 +62,11 @@ export function getUpcomingMatches() {
   return fetch(MATCH_BASE_URL + "/upcoming");
 }
 
+export function getVotingClosedMatches() {
+  console.log("fetching Vote Stats");
+  return fetch(MATCH_BASE_URL + "/votingclosedmatches");
+}
+
 export function updateMatches() {
   return fetch(MATCH_BASE_URL + "/update");
 }
