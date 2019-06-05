@@ -153,7 +153,7 @@ public class MatchResource {
     public ResponseEntity<?> updateMatches() {
         long now = Instant.now().getEpochSecond();
         System.out.println("current time : " + now);
-        List<MatchInfo> matches = matchRepository.findByMatchStateIn(Arrays.asList(UPCOMING, PREVIEW, TOSS, INPROGRESS));
+        List<MatchInfo> matches = matchRepository.findByMatchStateNotInAndStartTimeLessThan(Arrays.asList(COMPLETE, MOM, ABANDON), now);
         System.out.println("matches : " + matches);
         URIBuilder uriBuilder = new URIBuilder();
         matches.forEach(match -> {

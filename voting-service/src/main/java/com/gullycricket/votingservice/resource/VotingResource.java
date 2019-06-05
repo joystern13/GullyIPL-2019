@@ -82,10 +82,6 @@ public class VotingResource {
 
             System.out.println("Voting list : " + allUsersWhoVoted);
 
-            RestTemplate restTemplate = new RestTemplate();
-            Long activeUsersCount = restTemplate.getForObject(userServiceUrl, Long.class);
-            System.out.println("Active Users Count : " + activeUsersCount);
-
             Predicate<VotingDetails> win = s -> s.getTeamId() == winTeamId;
             Predicate<VotingDetails> lose = s -> s.getTeamId() != winTeamId;
             int winningCount = Math.toIntExact(allUsersWhoVoted.stream().filter(win).count());

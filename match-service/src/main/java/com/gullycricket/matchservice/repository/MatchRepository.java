@@ -14,7 +14,7 @@ public interface MatchRepository extends JpaRepository<MatchInfo,Integer> {
 
 	List<MatchInfo> findByMatchStateInOrderByStartTimeAsc(List<String> states);
 
-    List<MatchInfo> findByMatchStateIn(List<String> states);
+    List<MatchInfo> findByMatchStateNotInAndStartTimeLessThan(List<String> states, long startTime);
 
     Optional<MatchInfo> findByMatchIdAndStartTimeGreaterThan(int matchId, long startTime);
 }
