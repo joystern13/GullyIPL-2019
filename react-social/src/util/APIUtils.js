@@ -38,8 +38,6 @@ const requestUnsecure = options => {
   const defaults = { headers: headers };
   options = Object.assign({}, defaults, options);
 
-  console.log(options);
-
   return fetch(options.url, options).then(response => {
     console.log(response);
     return response;
@@ -98,6 +96,27 @@ export function castVote(voteDetails) {
 export function getUserVotes() {
   return requestUnsecure({
     url: VOTING_BASE_URL + "/get/" + localStorage.getItem(USER_ID),
+    method: "GET"
+  });
+}
+
+export function getLiveMatches() {
+  return requestUnsecure({
+    url: MATCH_BASE_URL + "/live",
+    method: "GET"
+  });
+}
+
+export function getVotingStats(matchIds) {
+  return requestUnsecure({
+    url: VOTING_BASE_URL + "/get?matchIds=" + matchIds,
+    method: "GET"
+  });
+}
+
+export function getActiveUsers() {
+  return requestUnsecure({
+    url: API_BASE_URL + "/active_users",
     method: "GET"
   });
 }

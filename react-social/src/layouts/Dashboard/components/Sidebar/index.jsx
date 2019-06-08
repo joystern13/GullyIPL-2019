@@ -22,7 +22,7 @@ import {
 
 // Material icons
 import {
-  InfoOutlined as InfoIcon,
+  AssignmentRounded as AssignmentIcon,
   HomeRounded as HomeIcon,
   HowToVoteRounded as VoteIcon,
   StarsRounded as StarsIcon,
@@ -97,11 +97,11 @@ class Sidebar extends Component {
             style={{ textDecoration: "none" }}
           >
             <ListItemIcon className={classes.listItemIcon}>
-              <VoteIcon />
+              <AssignmentIcon />
             </ListItemIcon>
             <ListItemText
               classes={{ primary: classes.listItemText }}
-              primary="Vote Stats"
+              primary="Voting Stats"
             />
           </ListItem>
           <ListItem

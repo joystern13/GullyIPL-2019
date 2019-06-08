@@ -16,4 +16,5 @@ public interface VotingDetailsRepository extends JpaRepository<VotingDetails, In
 
     @Query("select new map(sum(v.points) as points, v.userId as userid) from VotingDetails v group by v.userId order by points desc")
     public List<?> findUsersPoints();
+    List<VotingDetails> findByMatchIdIn(List<Integer> matchIds);
 }
