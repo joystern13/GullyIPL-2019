@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -24,9 +25,6 @@ public class VotingResource {
     private final int MULTIPLIER = 1;
     private final String STATE_UPCOMING = "upcoming";
     private final String STATE_PREVIEW = "preview";
-
-    @Value("${userservice.url.activeusers}")
-    private String userServiceUrl;
 
     @Value("${matchservice.url.matchstate}")
     private String matchStateUrl;
@@ -58,10 +56,13 @@ public class VotingResource {
         }
     }
 
-    @GetMapping(value = "/get/{user_id}")
-    public List<VotingDetails> getUserVotes(@PathVariable("user_id")final int userId){
+    @GetMapping(value = {"/get", "/get/{user_id}"})
+    public List<?> getUserVotes(@PathVariable("user_id")final Optional<Integer> userId){
         System.out.println("here");
-        return votingDetailsRepository.findByUserId(userId);
+        if(userId.isPresent())
+            return votingDetailsRepository.findByUserId(userId.get());
+        else
+            return votingDetailsRepository.findUsersPoints();
     }
 
     @GetMapping(value = "/{match_id}/{user_id}")
@@ -120,5 +121,6 @@ public class VotingResource {
 
         return winningPoints;
     }
+
 
 }
