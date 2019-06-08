@@ -100,16 +100,9 @@ export function getUserVotes() {
   });
 }
 
-export function getLiveMatches() {
-  return requestUnsecure({
-    url: MATCH_BASE_URL + "/live",
-    method: "GET"
-  });
-}
-
 export function getVotingStats(matchIds) {
   return requestUnsecure({
-    url: VOTING_BASE_URL + "/get?matchIds=" + matchIds,
+    url: VOTING_BASE_URL + "/get_votes?matchIds=" + matchIds,
     method: "GET"
   });
 }
@@ -117,6 +110,13 @@ export function getVotingStats(matchIds) {
 export function getActiveUsers() {
   return requestUnsecure({
     url: API_BASE_URL + "/active_users",
+    method: "GET"
+  });
+}
+
+export function getRankings() {
+  return requestUnsecure({
+    url: VOTING_BASE_URL + "/get",
     method: "GET"
   });
 }
