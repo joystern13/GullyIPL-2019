@@ -61,8 +61,8 @@
   background-size: contain;
   background-repeat: no-repeat;
   display: inline-block;
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   -webkit-transition: all 100ms ease-in;
   -moz-transition: all 100ms ease-in;
   transition: all 100ms ease-in;
@@ -80,8 +80,8 @@
   background-size: contain;
   background-repeat: no-repeat;
   display: inline-block;
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   -webkit-transition: all 100ms ease-in;
   -moz-transition: all 100ms ease-in;
   transition: all 100ms ease-in;
@@ -109,8 +109,8 @@
   background-size: contain;
   background-repeat: no-repeat;
   display: inline-block;
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   -webkit-transition: all 100ms ease-in;
   -moz-transition: all 100ms ease-in;
   transition: all 100ms ease-in;
@@ -143,4 +143,21 @@ a {
 }
 p {
   margin-bottom: 0.3em;
+}
+input[type="radio"] {
+  display: none;
+}
+.drinkcard-cc-checked {
+  cursor: pointer;
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 180px;
+  height: 180px;
+  -webkit-transition: all 100ms ease-in;
+  -moz-transition: all 100ms ease-in;
+  transition: all 100ms ease-in;
+  -webkit-filter: none;
+  -moz-filter: none;
+  filter: none;
 }

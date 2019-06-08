@@ -12,4 +12,5 @@ public interface VotingDetailsRepository extends JpaRepository<VotingDetails, In
     List<VotingDetails> findByUserId(int userId);
     List<VotingDetails> findByMatchId(int matchId);
     List<VotingDetails> findByMatchIdAndTeamId(int matchId, int teamId);
+    List<VotingDetails> findByMatchIdIn(List<Integer> matchIds);
 }
