@@ -122,7 +122,7 @@ public class VotingResource {
         return winningPoints;
     }
 
-    @GetMapping(value = "/get")
+    @GetMapping(value = "/get_votes")
     public List<VotingDetails> getVotesForMatches(@RequestParam List<Integer> matchIds){
         return votingDetailsRepository.findByMatchIdIn(matchIds);
     }
