@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import ReactRadioButtonGroup from "react-radio-button-group";
 import { Grid, Typography } from "@material-ui/core";
 import Moment from "react-moment";
+import LoadingIndicator from "../common/LoadingIndicator";
 
 // Material helpers
 import { withStyles } from "@material-ui/core";
@@ -25,6 +26,7 @@ class VoteForMatch extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       selectedOption: "option1",
       error: null,
       isLoaded: false,
@@ -102,7 +104,11 @@ class VoteForMatch extends Component {
     const rootClassName = classNames(classes.root, className);
 
     if (!isLoaded) {
-      return <div>Loading...</div>;
+      return (
+        <div className="container">
+          <LoadingIndicator />
+        </div>
+      );
     } else {
       return (
         <div className="container">
