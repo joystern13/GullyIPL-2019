@@ -9,7 +9,8 @@ import {
   TableHead,
   ExpansionPanel,
   ExpansionPanelSummary,
-  ExpansionPanelDetails
+  ExpansionPanelDetails,
+  TableRow
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import Moment from "react-moment";
@@ -35,9 +36,6 @@ const styles = theme => ({
   },
   item: {
     height: "100%"
-  },
-  table: {
-    minWidth: 650
   }
 });
 
@@ -108,64 +106,60 @@ class VoteStats extends Component {
 
     return (
       <DashboardLayout
-        title="Vote Stats"
+        title="Voting Stats"
         currentUser={this.props.currentUser}
         handleLogout={this.props.handleLogout}
       >
         <div className={classes.root}>
-          <Grid container spacing={3}>
+          <Grid container spacing={4}>
             {matches.map(match => {
               return (
-                <div>
-                  <Grid item lg={12} md={12} xl={12} xs={12}>
-                    <Portlet
-                      {...rest}
-                      className={rootClassName}
-                      style={{ padding: 10 }}
-                    >
-                      <PortletContent>
-                        <Typography variant="body1" className="matchText">
-                          <b>{match.matchDescription}</b> : {match.venueName}
-                          {match.venueLocation},
-                          <Moment unix>{match.startTime}</Moment>
-                        </Typography>
-                        <Table>
-                          <ReactRadioButtonGroup
-                            options={[
-                              {
-                                value: match.matchId + "1",
-                                label: match.team1Info.teamCode,
-                                itemClassName: "team1",
-                                labelClassName:
-                                  "drinkcard-cc-checked " +
-                                  match.team1Info.teamCode
-                              },
-                              {
-                                value: match.matchId,
-                                label: match.team2Info.teamCode,
-                                itemClassName: "team2",
-                                labelClassName:
-                                  "drinkcard-cc-checked " +
-                                  match.team2Info.teamCode
-                              }
-                            ]}
-                            name={"rdbTeam" + match.matchId}
-                            value={match.matchId}
-                          />
-                        </Table>
-                        <ExpansionPanel>
-                          <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                          >
-                            <Typography className={classes.heading}>
-                              View Votes
-                            </Typography>
-                          </ExpansionPanelSummary>
-                          <ExpansionPanelDetails>
-                            <Table className={classes.table}>
-                              <TableHead>
+                <Grid item lg={12} md={12} xl={9} xs={12}>
+                  <Portlet {...rest} className={rootClassName}>
+                    <PortletContent>
+                      <Typography variant="body1" className="matchText">
+                        <b>{match.matchDescription}</b> : {match.venueName}
+                        {match.venueLocation},
+                        <Moment unix>{match.startTime}</Moment>
+                      </Typography>
+                      <Table>
+                        <ReactRadioButtonGroup
+                          options={[
+                            {
+                              value: match.matchId + "1",
+                              label: match.team1Info.teamCode,
+                              itemClassName: "team1",
+                              labelClassName:
+                                "drinkcard-cc-checked " +
+                                match.team1Info.teamCode
+                            },
+                            {
+                              value: match.matchId,
+                              label: match.team2Info.teamCode,
+                              itemClassName: "team2",
+                              labelClassName:
+                                "drinkcard-cc-checked " +
+                                match.team2Info.teamCode
+                            }
+                          ]}
+                          name={"rdbTeam" + match.matchId}
+                          value={match.matchId}
+                        />
+                      </Table>
+                      <ExpansionPanel>
+                        <ExpansionPanelSummary
+                          expandIcon={<ExpandMoreIcon />}
+                          aria-controls="panel1a-content"
+                          id="panel1a-header"
+                        >
+                          <Typography className={classes.heading}>
+                            View Votes
+                          </Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                          <Table className={classes.table}>
+                            <TableHead>
+                              <TableRow>
                                 <TableCell
                                   width="40%"
                                   align="center"
@@ -187,8 +181,10 @@ class VoteStats extends Component {
                                 >
                                   {match.team2Info.teamName}
                                 </TableCell>
-                              </TableHead>
-                              <TableBody>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              <TableRow>
                                 <TableCell
                                   width="40%"
                                   align="center"
@@ -240,14 +236,14 @@ class VoteStats extends Component {
                                     <div />
                                   )}
                                 </TableCell>
-                              </TableBody>
-                            </Table>
-                          </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                      </PortletContent>
-                    </Portlet>
-                  </Grid>
-                </div>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </ExpansionPanelDetails>
+                      </ExpansionPanel>
+                    </PortletContent>
+                  </Portlet>
+                </Grid>
               );
             })}
           </Grid>

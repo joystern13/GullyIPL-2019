@@ -120,17 +120,17 @@
 }
 @media screen and (max-width: 760px) {
   .drinkcard-cc {
-    width: 100px;
-    height: 100px;
+    width: 85px;
+    height: 85px;
   }
   .drinkcard-cc-img {
-    width: 100px;
-    height: 100px;
+    width: 85px;
+    height: 85px;
   }
 
   .cc-selector input:disabled + .drinkcard-cc {
-    width: 100px;
-    height: 100px;
+    width: 85px;
+    height: 85px;
   }
 }
 /* Extras */
@@ -160,4 +160,19 @@ input[type="radio"] {
   -webkit-filter: none;
   -moz-filter: none;
   filter: none;
+}
+@media screen and (max-width: 760px) {
+  .drinkcard-cc-checked {
+    width: 85px;
+    height: 85px;
+  }
+  .drinkcard-cc-img {
+    width: 85px;
+    height: 85px;
+  }
+
+  .cc-selector input:disabled + .drinkcard-cc {
+    width: 85px;
+    height: 85px;
+  }
 }

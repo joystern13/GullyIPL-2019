@@ -28,7 +28,7 @@ class Homepage extends Component {
     homepage_cards: [
       { id: 1, text: "Vote Now", img: voteImg, link: "/vote" },
       { id: 2, text: "Guess MoM", img: momImg, link: "/mom" },
-      { id: 3, text: "Rankings", img: rankingImg, link: "#" }
+      { id: 3, text: "Rankings", img: rankingImg, link: "/rankings" }
     ]
   };
 

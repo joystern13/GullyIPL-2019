@@ -146,7 +146,7 @@ public class MatchResource {
 
     @GetMapping(value = "votingclosedmatches")
     public List<MatchInfo> getVotingClosedMatches() {
-        return matchRepository.findByMatchStateNotInOrderByMatchIdDesc(Arrays.asList(UPCOMING, PREVIEW));
+        return matchRepository.findByMatchStateNotInOrderByMatchIdDesc(Arrays.asList(UPCOMING, PREVIEW, TOSS));
     }
 
     @GetMapping(value = "update")
