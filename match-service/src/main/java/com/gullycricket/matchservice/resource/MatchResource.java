@@ -27,7 +27,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+import java.util.logging.Logger;
 
 
 @RestController
@@ -53,6 +53,9 @@ public class MatchResource {
     private final String UPCOMING = "upcoming";
     private final String PREVIEW = "preview";
     private final String INPROGRESS = "inprogress";
+    private final String DELAYED = "DELAYED";
+
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     @GetMapping(value = "/reload")
     public String loadMatchInfo() {
@@ -94,7 +97,7 @@ public class MatchResource {
 
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName("UTF-8")));
                     String matchStr = XmlUtils.readAll(bufferedReader);
-                    System.out.println(matchStr);
+                    logger.info(matchStr);
                     ObjectMapper mapper1 = new ObjectMapper();
                     mapper1.configure(
                             DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -146,15 +149,15 @@ public class MatchResource {
 
     @GetMapping(value = "votingclosedmatches")
     public List<MatchInfo> getVotingClosedMatches() {
-        return matchRepository.findByMatchStateNotInOrderByMatchIdDesc(Arrays.asList(UPCOMING, PREVIEW, TOSS));
+        return matchRepository.findByMatchStateNotInOrderByMatchIdDesc(Arrays.asList(UPCOMING, PREVIEW, DELAYED));
     }
 
     @GetMapping(value = "update")
     public ResponseEntity<?> updateMatches() {
-        long now = Instant.now().getEpochSecond();
-        System.out.println("current time : " + now);
-        List<MatchInfo> matches = matchRepository.findByMatchStateNotInAndStartTimeLessThan(Arrays.asList(COMPLETE, MOM, ABANDON), now);
-        System.out.println("matches : " + matches);
+        long nowMinusOneHour = Instant.now().minus(1, ChronoUnit.HOURS).getEpochSecond();
+        System.out.println("current time : " + nowMinusOneHour);
+        List<MatchInfo> matches = matchRepository.findByMatchStateNotInAndStartTimeLessThan(Arrays.asList(COMPLETE, MOM, ABANDON), nowMinusOneHour);
+        logger.info("Matches: " + matches);
         URIBuilder uriBuilder = new URIBuilder();
         matches.forEach(match -> {
 
@@ -172,7 +175,7 @@ public class MatchResource {
                         DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
                 Match matchDetails = mapper.readValue(jsonText, Match.class);
 
-                System.out.println("MAtch details : " + matchDetails);
+                logger.info("Match details: " + matchDetails);
 
                 if (matchDetails.getHeader().getState().equals(COMPLETE)
                         || matchDetails.getHeader().getState().equals(MOM)
@@ -194,7 +197,7 @@ public class MatchResource {
                         matchRepository.save(match);
                     }
                     else
-                        System.out.println("Error in updating Matchid : " + matchId);
+                        logger.severe("Error in updating Matchid : " + matchId);
                 }
                 else
                 {
