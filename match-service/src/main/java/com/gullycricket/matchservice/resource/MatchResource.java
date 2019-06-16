@@ -179,15 +179,16 @@ public class MatchResource {
 
                 if (matchDetails.getHeader().getState().equals(COMPLETE)
                         || matchDetails.getHeader().getState().equals(MOM)
-                        || matchDetails.getHeader().getState().equals(ABANDON))
-                {
+                        || matchDetails.getHeader().getState().equals(ABANDON)) {
                     int matchId = matchDetails.getMatch_id();
                     int winnerTeamId = matchDetails.getHeader().getWinning_team_id();
                     String matchStatus = matchDetails.getHeader().getStatus();
 
-                    double winningPoints = updateMatchResult(matchId, winnerTeamId);
+                    int losingTeamId = getLosingTeamId(match, winnerTeamId);
 
-                    if(winningPoints != -1)//success
+                    double winningPoints = updateMatchResult(matchId, winnerTeamId, losingTeamId);
+
+                    if (winningPoints != -1)//success
                     {
                         match.setMatchState(matchDetails.getHeader().getState());
                         match.setWinnerTeamId(winnerTeamId);
@@ -195,14 +196,10 @@ public class MatchResource {
                         match.setResultDesc(matchStatus);
 
                         matchRepository.save(match);
-                    }
-                    else
+                    } else
                         logger.severe("Error in updating Matchid : " + matchId);
-                }
-                else
-                {
-                    if(!match.getMatchState().equals(matchDetails.getHeader().getState()))
-                    {
+                } else {
+                    if (!match.getMatchState().equals(matchDetails.getHeader().getState())) {
                         match.setMatchState(matchDetails.getHeader().getState());
                         matchRepository.save(match);
                     }
@@ -221,16 +218,23 @@ public class MatchResource {
         return ResponseEntity.ok("SUCCESS");
     }
 
-    private double updateMatchResult(int matchId, int winnerTeamId) {
+    private int getLosingTeamId(MatchInfo match, int winnerTeamId) {
+        if (match.getTeam1Info().getTeamId() == winnerTeamId)
+            return match.getTeam2Info().getTeamId();
+        else
+            return match.getTeam1Info().getTeamId();
+    }
 
-        String url = votingServiceUrl.replace("{match_id}", String.valueOf(matchId)).replace("{win_team_id}", String.valueOf(winnerTeamId));
+    private double updateMatchResult(int matchId, int winnerTeamId, int losingTeamId) {
+
+        String url = votingServiceUrl.replace("{match_id}", String.valueOf(matchId)).replace("{win_team_id}", String.valueOf(winnerTeamId))
+                .replace("{losing_team_id}", String.valueOf(losingTeamId));
 
         return new RestTemplate().getForObject(url, Double.class);
     }
 
     @GetMapping(value = "/{match_id}/allowvote")
-    public String allowVoting(@PathVariable("match_id")final int matchId)
-    {
+    public String allowVoting(@PathVariable("match_id") final int matchId) {
         String allowVoting = "";
         try {
 
@@ -252,7 +256,7 @@ public class MatchResource {
 
                 System.out.println("matchDetails.getHeader().getState() : " + matchDetails.getHeader().getState());
 
-                if(!matchDetails.getHeader().getState().equals(TOSS)
+                if (!matchDetails.getHeader().getState().equals(TOSS)
                         && !matchDetails.getHeader().getState().equals(MOM)
                         && !matchDetails.getHeader().getState().equals(INPROGRESS))
                     allowVoting = "YES";

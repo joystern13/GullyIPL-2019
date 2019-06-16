@@ -10,7 +10,9 @@ import {
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
-  TableRow
+  TableRow,
+  Card,
+  CardContent
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import Moment from "react-moment";
@@ -21,7 +23,6 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import classNames from "classnames";
 
-import { Portlet, PortletContent } from "../components";
 import {
   getVotingClosedMatches,
   getVotingStats,
@@ -103,7 +104,7 @@ class VoteStats extends Component {
     const { classes, className, ...rest } = this.props;
     const rootClassName = classNames(classes.root, className);
     const { matches, matchVoteInfoMap } = this.state;
-
+    console.log(matchVoteInfoMap);
     return (
       <DashboardLayout
         title="Voting Stats"
@@ -111,12 +112,12 @@ class VoteStats extends Component {
         handleLogout={this.props.handleLogout}
       >
         <div className={classes.root}>
-          <Grid container spacing={4}>
+          <Grid container spacing={1}>
             {matches.map(match => {
               return (
                 <Grid item lg={12} md={12} xl={9} xs={12}>
-                  <Portlet {...rest} className={rootClassName}>
-                    <PortletContent>
+                  <Card>
+                    <CardContent>
                       <Typography variant="body1" className="matchText">
                         <b>{match.matchDescription}</b> : {match.venueName}
                         {match.venueLocation},
@@ -201,7 +202,7 @@ class VoteStats extends Component {
                                       .team1votes.map(vote => {
                                         return (
                                           <React.Fragment>
-                                            {vote.user.name}
+                                            {vote.user ? vote.user.name : ""}
                                             <br />
                                           </React.Fragment>
                                         );
@@ -227,7 +228,7 @@ class VoteStats extends Component {
                                       .team2votes.map(vote => {
                                         return (
                                           <React.Fragment>
-                                            {vote.user.name}
+                                            {vote.user ? vote.user.name : ""}
                                             <br />
                                           </React.Fragment>
                                         );
@@ -241,8 +242,8 @@ class VoteStats extends Component {
                           </Table>
                         </ExpansionPanelDetails>
                       </ExpansionPanel>
-                    </PortletContent>
-                  </Portlet>
+                    </CardContent>
+                  </Card>
                 </Grid>
               );
             })}

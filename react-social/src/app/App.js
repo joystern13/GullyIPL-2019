@@ -63,6 +63,9 @@ class App extends Component {
         });
       })
       .catch(error => {
+        console.log("Removing access token");
+        localStorage.removeItem(ACCESS_TOKEN);
+        localStorage.removeItem(USER_ID);
         this.setState({
           loading: false
         });

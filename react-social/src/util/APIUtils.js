@@ -38,10 +38,12 @@ const requestUnsecure = options => {
   const defaults = { headers: headers };
   options = Object.assign({}, defaults, options);
 
-  return fetch(options.url, options).then(response => {
-    console.log(response);
-    return response;
-  });
+  return fetch(options.url, options)
+    .then(response => {
+      console.log(response);
+      return response;
+    })
+    .catch(ex => console.log(ex));
 };
 
 export function getCurrentUser() {

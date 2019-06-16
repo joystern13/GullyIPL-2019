@@ -119,10 +119,6 @@ class UsersTable extends Component {
 
                     return user;
                   })
-                  .slice(
-                    0 + rowsPerPage * page,
-                    rowsPerPage + rowsPerPage * page
-                  )
                   .map(user => (
                     <TableRow
                       className={classes.tableRow}
@@ -158,21 +154,6 @@ class UsersTable extends Component {
               </TableBody>
             </Table>
           </PerfectScrollbar>
-          <TablePagination
-            backIconButtonProps={{
-              "aria-label": "Previous Page"
-            }}
-            component="div"
-            count={users.length}
-            nextIconButtonProps={{
-              "aria-label": "Next Page"
-            }}
-            onChangePage={this.handleChangePage}
-            onChangeRowsPerPage={this.handleChangeRowsPerPage}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            rowsPerPageOptions={[5, 10, 25, 50]}
-          />
         </PortletContent>
       </Portlet>
     );

@@ -34,6 +34,8 @@ class OAuth2RedirectHandler extends Component {
         />
       );
     } else {
+      localStorage.removeItem(ACCESS_TOKEN);
+      localStorage.removeItem(USER_ID);
       return (
         <Redirect
           to={{
