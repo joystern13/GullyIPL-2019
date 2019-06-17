@@ -81,23 +81,28 @@ public class VotingResource {
         double losingPoints = 0;
         try {
 
+            RestTemplate restTemplate = new RestTemplate();
+            List<Integer> allActiveUserIds = restTemplate.getForObject(userServiceUrl, ArrayList.class);
 
             List<VotingDetails> allUsersWhoVoted = votingDetailsRepository.findByMatchId(matchId);
 
-            List<Long> votedUserIds = new ArrayList<>();
+            List<Integer> votedUserIds = new ArrayList<>();
             allUsersWhoVoted.forEach(user -> {
-                votedUserIds.add(new Long(user.getUserId()));
+                votedUserIds.add(user.getUserId());
             });
-            RestTemplate restTemplate = new RestTemplate();
-            List<Long> allActiveUserIds = restTemplate.getForObject(userServiceUrl, ArrayList.class);
 
-            System.out.println(allActiveUserIds);
             allActiveUserIds
                     .stream()
                     .filter(userId -> !votedUserIds.contains(userId)).forEach(userWhoDidNotVote -> {
                         //add vote on losing team here
+                        System.out.println("userWhoDidNotVote : "+userWhoDidNotVote);
+
+                        VotingDetails noVote = new VotingDetails();
+                        noVote.setMatchId(matchId);
+                        noVote.setUserId(userWhoDidNotVote);
+                        noVote.setTeamId(losingTeamId);
+                        allUsersWhoVoted.add(noVote);
             });
-            //usersWhoDidNotVote.forEach(user -> System.out.println(user));
 
             System.out.println("Voting list : " + allUsersWhoVoted);
 
