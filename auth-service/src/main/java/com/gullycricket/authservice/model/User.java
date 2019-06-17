@@ -37,6 +37,9 @@ public class User {
     private int active;
 
     @Column
+    private String nickname;
+
+    @Column
     private String token;
 
     private String providerId;
@@ -119,5 +122,13 @@ public class User {
 
     public void setActive(int active) {
         this.active = active;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

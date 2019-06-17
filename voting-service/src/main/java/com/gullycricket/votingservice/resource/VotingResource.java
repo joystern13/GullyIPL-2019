@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping(value = "/gullycricket/votes")
@@ -29,8 +32,11 @@ public class VotingResource {
     @Value("${matchservice.url.matchstate}")
     private String matchStateUrl;
 
+    @Value("${userservice.url.active_userids}")
+    private String userServiceUrl;
+
     @PostMapping(value = "/add")
-    public ResponseEntity castVote(@RequestBody VotingDetails votingDetails){
+    public ResponseEntity castVote(@RequestBody VotingDetails votingDetails) {
 
         //check match state first
 
@@ -39,47 +45,59 @@ public class VotingResource {
         String allowVoting = restTemplate.getForObject(url, String.class);
         System.out.println("allowVoting : " + allowVoting);
 
-        if(!allowVoting.equals("YES"))
-        {
-            return new ResponseEntity("NO",HttpStatus.FORBIDDEN);
+        if (!allowVoting.equals("YES")) {
+            return new ResponseEntity("NO", HttpStatus.FORBIDDEN);
         }
 
-        VotingDetails existingVote = votingDetailsRepository.findByUserIdAndMatchId(votingDetails.getUserId(),votingDetails.getMatchId());
-        if (existingVote != null){
+        VotingDetails existingVote = votingDetailsRepository.findByUserIdAndMatchId(votingDetails.getUserId(), votingDetails.getMatchId());
+        if (existingVote != null) {
             existingVote.setTeamId(votingDetails.getTeamId());
             votingDetailsRepository.save(existingVote);
-            return new ResponseEntity("Vote created successfully",HttpStatus.OK);
-        }
-        else{
+            return new ResponseEntity("Vote created successfully", HttpStatus.OK);
+        } else {
             votingDetailsRepository.save(votingDetails);
-            return new ResponseEntity("Vote created successfully",HttpStatus.OK);
+            return new ResponseEntity("Vote created successfully", HttpStatus.OK);
         }
     }
 
     @GetMapping(value = {"/get", "/get/{user_id}"})
-    public List<?> getUserVotes(@PathVariable("user_id")final Optional<Integer> userId){
+    public List<?> getUserVotes(@PathVariable("user_id") final Optional<Integer> userId) {
         System.out.println("here");
-        if(userId.isPresent())
+        if (userId.isPresent())
             return votingDetailsRepository.findByUserId(userId.get());
         else
             return votingDetailsRepository.findUsersPoints();
     }
 
     @GetMapping(value = "/{match_id}/{user_id}")
-    public VotingDetails getVote(@PathVariable(name = "match_id") final int matchId, @PathVariable(name = "user_id") final int userId){
+    public VotingDetails getVote(@PathVariable(name = "match_id") final int matchId, @PathVariable(name = "user_id") final int userId) {
         System.out.println("Here");
-        return votingDetailsRepository.findByUserIdAndMatchId(userId,matchId);
+        return votingDetailsRepository.findByUserIdAndMatchId(userId, matchId);
     }
 
-    @GetMapping(value = "/update/{match_id}/{win_team_id}")
-    public double updateMatchVotes(@PathVariable(name = "match_id") final int matchId, @PathVariable(name = "win_team_id") final int winTeamId)
-    {
+    @GetMapping(value = "/update/{match_id}/{win_team_id}/{losing_team_id}")
+    public double updateMatchVotes(@PathVariable(name = "match_id") final int matchId, @PathVariable(name = "win_team_id") final int winTeamId, @PathVariable(name = "losing_team_id") final int losingTeamId) {
         double winningPoints = 0;
         double losingPoints = 0;
         try {
 
 
             List<VotingDetails> allUsersWhoVoted = votingDetailsRepository.findByMatchId(matchId);
+
+            List<Long> votedUserIds = new ArrayList<>();
+            allUsersWhoVoted.forEach(user -> {
+                votedUserIds.add(new Long(user.getUserId()));
+            });
+            RestTemplate restTemplate = new RestTemplate();
+            List<Long> allActiveUserIds = restTemplate.getForObject(userServiceUrl, ArrayList.class);
+
+            System.out.println(allActiveUserIds);
+            allActiveUserIds
+                    .stream()
+                    .filter(userId -> !votedUserIds.contains(userId)).forEach(userWhoDidNotVote -> {
+                        //add vote on losing team here
+            });
+            //usersWhoDidNotVote.forEach(user -> System.out.println(user));
 
             System.out.println("Voting list : " + allUsersWhoVoted);
 
@@ -90,14 +108,11 @@ public class VotingResource {
 
             System.out.println("winningCount : " + winningCount + " : " + losingCount);
 
-            if(winningCount == 0 || losingCount == 0)
-            {
+            if (winningCount == 0 || losingCount == 0) {
                 winningPoints = losingPoints = 0;
-            }
-            else if(winningCount != 0 && losingCount != 0)
-            {
-                winningPoints = ((double)losingCount/winningCount)*MULTIPLIER;
-                losingPoints = -1*MULTIPLIER;
+            } else if (winningCount != 0 && losingCount != 0) {
+                winningPoints = ((double) losingCount / winningCount) * MULTIPLIER;
+                losingPoints = -1 * MULTIPLIER;
             }
 
             System.out.println("points : " + winningPoints + " : " + losingPoints);
@@ -112,9 +127,7 @@ public class VotingResource {
 
             votingDetailsRepository.saveAll(allUsersWhoVoted);
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             winningPoints = -1;
         }
@@ -123,7 +136,7 @@ public class VotingResource {
     }
 
     @GetMapping(value = "/get_votes")
-    public List<VotingDetails> getVotesForMatches(@RequestParam List<Integer> matchIds){
+    public List<VotingDetails> getVotesForMatches(@RequestParam List<Integer> matchIds) {
         return votingDetailsRepository.findByMatchIdIn(matchIds);
     }
 

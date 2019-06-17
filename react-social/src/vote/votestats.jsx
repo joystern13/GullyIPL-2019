@@ -169,7 +169,15 @@ class VoteStats extends Component {
                                     verticalAlign: "top"
                                   }}
                                 >
-                                  {match.team1Info.teamName}
+                                  {match.team1Info.teamName} (
+                                  {matchVoteInfoMap.get(match.matchId)
+                                    ? matchVoteInfoMap.get(match.matchId)
+                                        .team1votes
+                                      ? matchVoteInfoMap.get(match.matchId)
+                                          .team1votes.length
+                                      : 0
+                                    : 0}
+                                  )
                                 </TableCell>
                                 <TableCell width="20%" />
                                 <TableCell
@@ -180,7 +188,15 @@ class VoteStats extends Component {
                                     verticalAlign: "top"
                                   }}
                                 >
-                                  {match.team2Info.teamName}
+                                  {match.team2Info.teamName} (
+                                  {matchVoteInfoMap.get(match.matchId)
+                                    ? matchVoteInfoMap.get(match.matchId)
+                                        .team2votes
+                                      ? matchVoteInfoMap.get(match.matchId)
+                                          .team2votes.length
+                                      : 0
+                                    : 0}
+                                  )
                                 </TableCell>
                               </TableRow>
                             </TableHead>
@@ -202,7 +218,9 @@ class VoteStats extends Component {
                                       .team1votes.map(vote => {
                                         return (
                                           <React.Fragment>
-                                            {vote.user ? vote.user.name : ""}
+                                            {vote.user
+                                              ? vote.user.nickname
+                                              : ""}
                                             <br />
                                           </React.Fragment>
                                         );
@@ -228,7 +246,9 @@ class VoteStats extends Component {
                                       .team2votes.map(vote => {
                                         return (
                                           <React.Fragment>
-                                            {vote.user ? vote.user.name : ""}
+                                            {vote.user
+                                              ? vote.user.nickname
+                                              : ""}
                                             <br />
                                           </React.Fragment>
                                         );
